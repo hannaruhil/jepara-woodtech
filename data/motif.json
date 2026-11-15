@@ -1,0 +1,104 @@
+{
+  "dibuat": "2026-11-15",
+  "jumlah": 3,
+  "entri": [
+    {
+      "kode": "M01",
+      "contoh": true,
+      "nama_lokal": "CONTOH Motif Satu",
+      "nama_indonesia": "CONTOH Motif Satu (sama)",
+      "ciri": [
+        "CONTOH ciri pertama",
+        "CONTOH ciri kedua"
+      ],
+      "varian": "tidak ada varian",
+      "teknik": [
+        "relief"
+      ],
+      "alat": [
+        "CONTOH alat 1",
+        "CONTOH alat 2"
+      ],
+      "kayu": [
+        "jati"
+      ],
+      "makna_cerita": "CONTOH — bukan data asli. Di sini ditulis makna/cerita dengan kata-kata perajin.",
+      "perajin": {
+        "nama": "Perajin Contoh 1",
+        "bengkel": "Bengkel Contoh 1",
+        "kontak": "08xx-CONTOH"
+      },
+      "foto": {
+        "depan": "foto/M01_depan.webp?v=3061016f",
+        "samping": "foto/M01_samping.webp?v=be43a415",
+        "detail": "foto/M01_detail.webp?v=9e51e402"
+      },
+      "lisensi": "Terbatas",
+      "skd": 100
+    },
+    {
+      "kode": "M02",
+      "contoh": true,
+      "nama_lokal": "CONTOH Motif Dua",
+      "nama_indonesia": "CONTOH Motif Dua",
+      "ciri": [
+        "CONTOH ciri pertama",
+        "CONTOH ciri kedua",
+        "CONTOH ciri ketiga"
+      ],
+      "varian": "CONTOH varian",
+      "teknik": [
+        "krawangan"
+      ],
+      "alat": [
+        "CONTOH alat 1"
+      ],
+      "kayu": [
+        "jati",
+        "mahoni"
+      ],
+      "makna_cerita": "perajin tidak mengetahui",
+      "perajin": {
+        "nama": "Perajin Contoh 2",
+        "bengkel": "Bengkel Contoh 2",
+        "kontak": ""
+      },
+      "foto": {
+        "depan": "foto/M02_depan.webp?v=53063833",
+        "samping": "foto/M02_samping.webp?v=9f579cf8"
+      },
+      "lisensi": "CC BY-NC 4.0",
+      "skd": 80
+    },
+    {
+      "kode": "M03",
+      "contoh": true,
+      "nama_lokal": "CONTOH Motif Tiga",
+      "nama_indonesia": "CONTOH Motif Tiga",
+      "ciri": [
+        "CONTOH ciri pertama"
+      ],
+      "varian": "",
+      "teknik": [
+        "relief"
+      ],
+      "alat": [
+        "CONTOH alat 1"
+      ],
+      "kayu": [
+        "jati"
+      ],
+      "makna_cerita": "",
+      "perajin": {
+        "nama": "",
+        "bengkel": "Bengkel Contoh 3",
+        "kontak": ""
+      },
+      "foto": {
+        "depan": "foto/M03_depan.webp?v=16980fee"
+      },
+      "lisensi": "",
+      "skd": 70
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3e2714">
+<meta name="description" content="Ensiklopedia digital motif ukir Jepara — bisa dibuka tanpa internet.">
+<title>JEPARA WOODTECH</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="ikon-192.png">
+<link rel="apple-touch-icon" href="ikon-192.png">
+<link rel="stylesheet" href="gaya.css">
+</head>
+<body>
+
+<header id="kepala">
+  <button type="button" class="ikon" id="tombol-kembali" aria-label="Kembali" hidden>←</button>
+  <a href="#/" class="merek">
+    <img src="ikon-192.png" alt="" width="34" height="34">
+    <span><b>JEPARA WOODTECH</b><small id="judul-layar">Ensiklopedia motif ukir</small></span>
+  </a>
+  <span id="lencana-offline" class="lencana-offline" title="Status offline"></span>
+</header>
+
+<main id="isi" tabindex="-1">
+  <p class="memuat">Memuat…</p>
+</main>
+
+<!-- Penampil foto layar penuh -->
+<div id="penampil" hidden>
+  <button type="button" class="ikon tutup" id="penampil-tutup" aria-label="Tutup">✕</button>
+  <img id="penampil-gambar" alt="">
+  <p id="penampil-teks"></p>
+</div>
+
+<noscript><p class="kotak-info">Aplikasi ini butuh JavaScript. Aktifkan JavaScript di browser.</p></noscript>
+<script src="app.js"></script>
+</body>
+</html>
