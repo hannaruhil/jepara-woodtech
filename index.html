@@ -3,22 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1e130b">
+<meta name="theme-color" content="#f7f4ef">
 <meta name="description" content="Ensiklopedia digital motif ukir Jepara — bisa dibuka tanpa internet.">
 <title>JEPARA WOODTECH</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="ikon-192.png">
 <link rel="apple-touch-icon" href="ikon-192.png">
+<link rel="preload" href="huruf/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="gaya.css">
 </head>
 <body>
 
+<!-- Ikon garis sederhana, dipakai ulang di seluruh aplikasi: <svg><use href="#i-buku"/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-buku" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+  <symbol id="i-bintang" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></symbol>
+  <symbol id="i-toko" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 9l1.5-5h15L21 9M3 9h18M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12v9h14v-9M10 21v-5h4v5"/></symbol>
+  <symbol id="i-mik" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></g></symbol>
+  <symbol id="i-cari" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
+  <symbol id="i-kembali" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-kutip" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18v-5.5C4 8.4 6.2 5.8 10 5l.7 1.6C8.4 7.5 7.4 9 7.3 11H10v7zm10 0v-5.5c0-4.1 2.2-6.7 6-7.5l.7 1.6c-2.3.9-3.3 2.4-3.4 4.4H20v7z"/></symbol>
+</svg>
+
 <header id="kepala">
-  <button type="button" class="ikon" id="tombol-kembali" aria-label="Kembali" hidden>←</button>
-  <a href="#/" class="merek">
-    <img src="ikon-192.png" alt="" width="34" height="34">
-    <span><b>JEPARA WOODTECH</b><small id="judul-layar">Ensiklopedia motif ukir</small></span>
-  </a>
+  <button type="button" class="ikon" id="tombol-kembali" aria-label="Kembali" hidden><svg><use href="#i-kembali"/></svg></button>
+  <a href="#/" class="merek" aria-label="JEPARA WOODTECH, ke beranda">wood<i>tech</i></a>
+  <span id="judul-layar" class="judul-layar">Ensiklopedia motif ukir</span>
   <span id="lencana-offline" class="lencana-offline" title="Status offline"></span>
 </header>
 

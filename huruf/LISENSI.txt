@@ -1,0 +1,4 @@
+Plus Jakarta Sans — dirancang oleh Gumpita Rahayu (Tokotype), Indonesia.
+Lisensi: SIL Open Font License 1.1 — bebas dipakai, disalin, dan dibagikan bersama aplikasi.
+https://github.com/tokotype/PlusJakartaSans  ·  https://openfontlicense.org
+Berkas: subset latin, berat 500–800 (variable), diambil dari Google Fonts.

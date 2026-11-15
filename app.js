@@ -13,15 +13,19 @@
    3. Simpan semua foto ke "lemari" HP (Cache Storage) supaya bisa dibuka tanpa internet.
 
    Aplikasi TIDAK punya akun, iklan, atau pembayaran, dan tidak mengirim data apa pun. */
-/* ------------------------------------------------------------------ PENGATURAN */
+/* ------------------------------------------------------------------ PENGATURAN PROYEK
+   Semua tulisan yang "khas Jepara" dikumpulkan di sini. Sekolah/daerah lain yang meniru
+   proyek ini cukup mengubah bagian ini (lihat panduan replikasi).
+   JANGAN tulis nama lengkap siswa tanpa izin tertulis orang tua. */
+const TIM = 'Tim Siswa Peneliti JEPARA WOODTECH'; // nama tim yang tampil di web
+const DAERAH = 'Jepara'; // dipakai di sapaan beranda
+const LOKASI = 'Desa Mulyoharjo, Jepara'; // tempat wawancara perajin
+const KEGIATAN = 'penelitian ISPO 2026 (bidang Komputer)';
+/* ------------------------------------------------------------------ pengaturan teknis */
 const ALAMAT_DATA = 'data/motif.json';
 const LEMARI_DATA = 'woodtech-data'; // nama simpanan foto & data di HP (sama dengan sw.ts)
 const NAMA_SUDUT = { depan: 'Depan', samping: 'Samping', detail: 'Detail' };
 const URUTAN_SUDUT = ['depan', 'samping', 'detail'];
-/* Nama tim yang tampil di web. Ubah di sini bila perlu (mis. tambahkan nama sekolah).
-   JANGAN tulis nama lengkap siswa tanpa izin tertulis orang tua. */
-const TIM = 'Tim Siswa Peneliti JEPARA WOODTECH';
-const LOKASI = 'Desa Mulyoharjo, Jepara';
 let DATA = { dibuat: '', jumlah: 0, entri: [] };
 let dataSiap = false;
 const saring = { cari: '', teknik: '', kayu: '' }; // pilihan pencarian di Perpustakaan
@@ -78,7 +82,8 @@ function jumlahPerajin() {
 }
 function adaContoh() { return DATA.entri.some(e => e.contoh); }
 const lencanaContoh = '<span class="lencana-contoh">CONTOH</span>';
-const hiasan = '<div class="hiasan" aria-hidden="true"><span></span></div>';
+/** Ikon garis dari index.html (#i-buku, #i-bintang, #i-toko, #i-mik, ...). */
+const ikon = (nama) => `<svg aria-hidden="true"><use href="#i-${nama}"/></svg>`;
 function fotoUtama(e) { return e.foto?.depan || e.foto?.detail || e.foto?.samping; }
 function jumlahFoto() {
     return DATA.entri.reduce((n, e) => n + Object.values(e.foto || {}).filter(Boolean).length, 0);
@@ -112,12 +117,26 @@ function kartuMotif(e) {
         <span class="gambar">${foto
         ? `<img src="${aman(foto)}" alt="" loading="lazy" decoding="async">`
         : '<span class="tanpa-foto">Foto belum tersedia</span>'}
-          ${e.contoh ? lencanaContoh : ''}<span class="kode">${aman(e.kode)}</span></span>
+          ${e.contoh ? lencanaContoh : ''}</span>
         <span class="teks">
+          <span class="kode">${aman(e.kode)}</span>
           <b>${aman(judul(e))}</b>
           ${ind ? `<small>${aman(ind)}</small>` : ''}
           <span class="tag">${[...(e.teknik || []), ...(e.kayu || [])].map(t => `<i>${aman(t)}</i>`).join('')}</span>
         </span>
+      </a>`;
+}
+/** Satu baris motif (daftar "Koleksi terbaru" di beranda). */
+function barisMotif(e) {
+    const foto = fotoUtama(e);
+    return `
+      <a class="baris-motif" href="#/motif/${encodeURIComponent(e.kode)}">
+        <span class="foto">${foto ? `<img src="${aman(foto)}" alt="" loading="lazy" decoding="async">` : ''}</span>
+        <span class="teks">
+          <b>${aman(judul(e))} ${e.contoh ? lencanaContoh : ''}</b>
+          <span class="tag">${[...(e.teknik || []), ...(e.kayu || [])].map(t => `<i>${aman(t)}</i>`).join('')}</span>
+        </span>
+        <span class="panah" aria-hidden="true">›</span>
       </a>`;
 }
 const LANGKAH = [
@@ -149,7 +168,7 @@ function tampilkan() {
     const [layar, kode] = bagianAlamat();
     if (isi.dataset.layar === 'perpustakaan')
         gulirPerpustakaan = window.scrollY;
-    let judulKecil = 'Ensiklopedia motif ukir';
+    let judulKecil = '';
     if (!layar)
         layarBeranda();
     else if (layar === 'motif' && kode)
@@ -174,7 +193,7 @@ function tampilkan() {
     }
     $('#judul-layar').textContent = judulKecil;
     $('#tombol-kembali').hidden = !layar;
-    document.title = (layar ? judulKecil + ' · ' : '') + 'JEPARA WOODTECH';
+    document.title = (judulKecil ? judulKecil + ' · ' : '') + 'JEPARA WOODTECH';
     // Kembali ke Perpustakaan → posisi gulir dikembalikan; layar lain mulai dari atas
     const keGulir = isi.dataset.layar === 'perpustakaan' ? gulirPerpustakaan : 0;
     requestAnimationFrame(() => window.scrollTo(0, keGulir));
@@ -191,62 +210,51 @@ function layarBeranda() {
     isi.dataset.layar = 'beranda';
     const pilih = motifPilihan();
     const fotoPilih = pilih ? fotoUtama(pilih) : undefined;
-    const terbaru = DATA.entri.slice().reverse().slice(0, 8);
-    const segera = '<span class="segera-label">segera</span>';
+    const terbaru = DATA.entri.slice().reverse().slice(0, 4);
+    const p = jumlahPerajin();
+    const segera = '<span class="segera">segera</span>';
     isi.innerHTML = `
-    <section class="pajang">
-      ${fotoPilih ? `<img src="${aman(fotoPilih)}" alt="" decoding="async" fetchpriority="high">` : ''}
-      <div class="pajang-teks">
-        <p class="sub">Ensiklopedia Motif Ukir · ${LOKASI}</p>
-        <h1>Kenali Ukiran Jepara</h1>
-        <p class="en" lang="en">Digital Encyclopedia of Jepara Wood Carving Motifs</p>
-        <a class="tombol emas" href="#/motif">Jelajahi motif <span aria-hidden="true">→</span></a>
-      </div>
-      ${pilih ? `<a class="pilihan" href="#/motif/${encodeURIComponent(pilih.kode)}">
-          <span>Motif pilihan hari ini<br><b>${aman(judul(pilih))}</b></span>
-          ${pilih.contoh ? lencanaContoh : ''}<span class="panah" aria-hidden="true">›</span></a>` : ''}
+    <section class="sapa">
+      <h1>Yuk kenali <mark>ukiran</mark> ${aman(DAERAH)}!</h1>
+      <p>Dari perajin ${aman(LOKASI)}</p>
     </section>
-    ${angkaAngka()}
-    ${adaContoh() ? `<p class="kotak-info">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : hiasan}
+
+    ${pilih ? `<a class="pajang" href="#/motif/${encodeURIComponent(pilih.kode)}">
+        ${fotoPilih ? `<img src="${aman(fotoPilih)}" alt="" decoding="async" fetchpriority="high">` : ''}
+        <span class="stiker">Motif hari ini ✦</span>
+        ${pilih.contoh ? lencanaContoh : ''}
+        <span class="nama"><small>${aman(pilih.kode)}${pilih.teknik?.[0] ? ' · ' + aman(pilih.teknik[0]) : ''}</small>${aman(judul(pilih))}</span>
+      </a>` : ''}
+
+    <nav class="ubin" aria-label="Menu utama">
+      <a class="utama" href="#/motif">${ikon('buku')}Perpustakaan Motif<small>${DATA.entri.length} motif</small></a>
+      <a href="#/c">${segera}${ikon('bintang')}Game Tebak Motif<small>Kumpulkan lencana</small></a>
+      <a href="#/b">${segera}${ikon('toko')}Katalog Perajin<small>${p ? p + ' perajin' : 'Kenali perajinnya'}</small></a>
+      <a href="#/d">${segera}${ikon('mik')}Misi Wawancara<small>Jadi peneliti</small></a>
+    </nav>
+
+    ${adaContoh() ? `<p class="kotak-info" style="margin-top:16px">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : ''}
+
+    ${terbaru.length ? `
+    <div class="judul-bagian"><h2>Koleksi terbaru</h2><a href="#/motif">Lihat semua ›</a></div>
+    <div class="daftar-baris">${terbaru.map(barisMotif).join('')}</div>` : ''}
 
     <section class="karya" aria-labelledby="judul-karya">
-      <p class="sub">Karya Tim Siswa</p>
+      <p class="label-kecil">Karya Tim Siswa</p>
       <h2 id="judul-karya">Dicatat oleh siswa, dituturkan oleh perajin</h2>
       <p>Setiap motif di sini didokumentasikan langsung oleh siswa SMP: mewawancarai perajin,
          memotret ukiran, dan mencatat maknanya dengan kata-kata perajin sendiri.</p>
       <ol class="langkah">
-        ${LANGKAH.map(([j], n) => `<li><span class="no">${n + 1}</span><b>${j}</b></li>`).join('')}
+        ${LANGKAH.map(([j], n) => `<li><span class="no">${n + 1}</span>${j}</li>`).join('')}
       </ol>
-      <a class="tautan-panah" href="#/karya">Lihat di balik layar →</a>
+      <a class="tautan-panah" href="#/karya">Lihat di balik layar ›</a>
     </section>
 
-    ${terbaru.length ? `${hiasan}
-    <div class="judul-bagian"><h2>Koleksi motif</h2><a href="#/motif">Lihat semua ›</a></div>
-    <div class="deret">${terbaru.map(kartuMotif).join('')}</div>` : ''}
-
-    ${hiasan}
-    <div class="judul-bagian"><h2>Jelajahi</h2></div>
-    <nav class="menu-modul" aria-label="Modul">
-      <a class="modul aktif" href="#/motif">
-        <span class="huruf">A</span>
-        <span><b>Perpustakaan Motif</b><small>Cari motif menurut nama, teknik, atau kayu</small></span>
-      </a>
-      <a class="modul" href="#/b">
-        <span class="huruf">B</span>
-        <span><b>Katalog Titik Temu ${segera}</b><small>Kenali perajin & produknya</small></span>
-      </a>
-      <a class="modul" href="#/c">
-        <span class="huruf">C</span>
-        <span><b>Game Tebak & Susun ${segera}</b><small>Kuis foto dan menyusun motif</small></span>
-      </a>
-      <a class="modul" href="#/d">
-        <span class="huruf">D</span>
-        <span><b>Misi Wawancara ${segera}</b><small>Panduan mewawancarai perajin</small></span>
-      </a>
-    </nav>
-    <footer class="kaki">${hiasan}
+    <footer class="kaki">
       <a href="#/karya">Di balik layar</a> · <a href="#/tentang">Tentang</a><br>
-      ${TIM} · data ${aman(DATA.dibuat || '-')}</footer>`;
+      ${aman(TIM)} · data ${aman(DATA.dibuat || '-')}<br>
+      <span class="en" lang="en">Digital Encyclopedia of ${aman(DAERAH)} Wood Carving Motifs</span>
+    </footer>`;
 }
 /* ------------------------------------------------------------------ MODUL A: PERPUSTAKAAN */
 function layarPerpustakaan() {
@@ -260,11 +268,12 @@ function layarPerpustakaan() {
       </div>` : '';
     isi.innerHTML = `
     <header class="kepala-layar">
-      <p class="sub">Modul A</p>
+      <p class="label-kecil">Modul A</p>
       <h1>Perpustakaan Motif</h1>
       <p>Koleksi motif ukir hasil dokumentasi tim siswa bersama perajin ${LOKASI}.</p>
     </header>
     <div class="kotak-cari">
+      ${ikon('cari')}
       <input type="search" id="cari" placeholder="Cari nama motif, ciri, makna…"
              value="${aman(saring.cari)}" autocomplete="off" enterkeyhint="search" aria-label="Cari motif">
     </div>
@@ -348,20 +357,20 @@ function layarDetail(kode) {
     </div>
 
     <header class="judul-motif">
-      <p class="sub">Motif ${aman(e.kode)}</p>
+      <p class="label-kecil">Motif ${aman(e.kode)}</p>
       <h1>${aman(judul(e))}</h1>
       ${ind ? `<p>${aman(ind)}</p>` : ''}
     </header>
-    ${hiasan}
 
     ${e.makna_cerita && !maknaTidakDiketahui(e.makna_cerita) ? `
       <figure class="kutipan">
-        <p class="sub">Makna & cerita</p>
+        ${ikon('kutip')}
+        <p class="label-kecil">Makna & cerita</p>
         <blockquote>${aman(e.makna_cerita)}</blockquote>
         <figcaption>— dituturkan oleh ${p.nama ? aman(p.nama) : 'perajin'}${p.bengkel ? `, ${aman(p.bengkel)}` : ''}</figcaption>
       </figure>` : `
       <figure class="kutipan kosong-makna">
-        <p class="sub">Makna & cerita</p>
+        <p class="label-kecil">Makna & cerita</p>
         <blockquote>${e.makna_cerita
         ? 'Perajin yang diwawancarai belum mengetahui makna motif ini. Kalau kamu tahu ceritanya, tanyakan ke perajin lain!'
         : 'Belum ada cerita yang tercatat dari perajin.'}</blockquote>
@@ -383,10 +392,10 @@ function layarDetail(kode) {
         : redup('Identitas perajin tidak ditampilkan (sesuai izin perajin).'))}
 
     <aside class="jejak">
-      <span class="meterai" aria-hidden="true"></span>
+      ${ikon('mik')}
       <div>
-        <p class="sub">Karya Tim Siswa</p>
-        <p>Didokumentasikan oleh <b>${TIM}</b> melalui wawancara langsung${p.nama
+        <p class="label-kecil">Karya Tim Siswa</p>
+        <p>Didokumentasikan oleh <b>${aman(TIM)}</b> melalui wawancara langsung${p.nama
         ? ` bersama <b>${aman(p.nama)}</b>` : ' bersama perajin'} di ${LOKASI}.</p>
         <a href="#/karya">Bagaimana motif ini dicatat? ›</a>
       </div>
@@ -444,14 +453,14 @@ document.addEventListener('keydown', ev => { if (ev.key === 'Escape')
 function layarSegera(huruf) {
     isi.dataset.layar = 'segera';
     const daftar = {
-        b: ['Katalog Titik Temu', 'Kartu perajin dan produknya, dengan tombol telepon/WhatsApp.'],
-        c: ['Game Tebak & Susun Motif', 'Kuis foto motif dan menyusun unsur motif, dengan soal yang menyesuaikan kemampuanmu.'],
-        d: ['Misi Wawancara', 'Panduan langkah demi langkah untuk mewawancarai perajin.'],
+        b: ['toko', 'Katalog Titik Temu', 'Kartu perajin dan produknya, dengan tombol telepon/WhatsApp.'],
+        c: ['bintang', 'Game Tebak & Susun Motif', 'Kuis foto motif dan menyusun unsur motif, dengan soal yang menyesuaikan kemampuanmu.'],
+        d: ['mik', 'Misi Wawancara', 'Panduan langkah demi langkah untuk mewawancarai perajin.'],
     };
-    const [namaModul, keterangan] = daftar[huruf];
+    const [namaIkon, namaModul, keterangan] = daftar[huruf];
     isi.innerHTML = `
     <section class="segera">
-      <span class="huruf besar">${huruf.toUpperCase()}</span>
+      <span class="ikon-besar">${ikon(namaIkon)}</span>
       <h1>${namaModul}</h1>
       <p>${keterangan}</p>
       <p class="redup">Modul ini sedang dibuat dan akan muncul di pembaruan berikutnya.</p>
@@ -465,7 +474,7 @@ function layarTentang() {
     <section class="teks-panjang">
       <h1>Tentang JEPARA WOODTECH</h1>
       <p>Ensiklopedia digital motif ukir Jepara. Isinya dikumpulkan dari wawancara dengan perajin di
-         Desa Mulyoharjo, Jepara, untuk penelitian ISPO 2026 (bidang Komputer).</p>
+         ${LOKASI}, untuk ${KEGIATAN}.</p>
       <h2>Privasi</h2>
       <ul>
         <li>Tanpa akun, tanpa iklan, tanpa pembayaran.</li>
@@ -482,6 +491,7 @@ function layarTentang() {
          built by junior high school students for ISPO 2026. Students interviewed carvers in ${LOKASI},
          photographed each motif from three angles, and recorded its meaning in the carvers' own words.
          The app works offline, needs no account, and shows no ads. Content is in Indonesian.</p>
+      <p class="redup">Huruf: Plus Jakarta Sans, karya Tokotype (Indonesia), lisensi SIL Open Font License.</p>
     </section>`;
     perbaruiLencanaOffline();
 }
@@ -491,11 +501,11 @@ function layarKarya() {
     const kayu = daftarUnik('kayu').length, teknik = daftarUnik('teknik').length;
     isi.innerHTML = `
     <section class="teks-panjang">
-      <p class="sub">Karya Tim Siswa</p>
+      <p class="label-kecil">Karya Tim Siswa</p>
       <h1>Di Balik Layar</h1>
       <p class="pembuka">Ensiklopedia ini bukan disalin dari internet. Setiap motif dikumpulkan sendiri oleh
          siswa SMP yang datang ke bengkel perajin di ${LOKASI}.</p>
-      ${angkaAngka('kotak')}
+      ${angkaAngka()}
       <p class="redup">${kayu} jenis kayu · ${teknik} teknik ukir tercatat${adaContoh() ? ' · masih data CONTOH' : ''}</p>
 
       <h2>Empat langkah mencatat satu motif</h2>
@@ -516,7 +526,7 @@ function layarKarya() {
          izin, dan lainnya). Motif baru diterbitkan setelah lengkap dan izinnya jelas.</p>
 
       <h2>Tim</h2>
-      <p>${TIM}. Penelitian ISPO 2026 bidang Komputer, bersama para perajin ${LOKASI}.
+      <p>${TIM}. Bagian dari ${KEGIATAN}, bersama para perajin ${LOKASI}.
          Terima kasih kepada semua perajin yang telah berbagi cerita.</p>
       <p class="tengah"><a class="tombol" href="#/motif">Lihat koleksi motif</a></p>
     </section>`;
@@ -621,6 +631,8 @@ addEventListener('online', () => { perbaruiLencanaOffline(); if (dataSiap)
 addEventListener('offline', perbaruiLencanaOffline);
 /* ------------------------------------------------------------------ mulai */
 $('#tombol-kembali').addEventListener('click', kembali);
+// Garis tipis di bawah kepala hanya saat halaman sudah digulir (supaya bersih di atas)
+addEventListener('scroll', () => $('#kepala').classList.toggle('bergaris', window.scrollY > 4), { passive: true });
 addEventListener('hashchange', () => { sudahPindahLayar = true; tampilkan(); });
 async function mulai() {
     if (statusOffline.didukung) {
