@@ -47,7 +47,7 @@ Proposal 3.2 menyebut "hosting statis sekolah atau layanan gratis" → dipakai *
 5. Buka di Chrome HP → **⋮ → Tambahkan ke layar utama**.
 
 **Setiap ada data baru** (dari folder ISPO): `python terbitkan.py`
-→ menjalankan build.py, lalu mengirim isi `aplikasi/` ke GitHub.
+→ menerjemahkan TypeScript, menjalankan build.py, lalu mengirim isi `aplikasi/` ke GitHub.
 
 > Yang terkirim **hanya** isi folder `aplikasi/`. Folder `data/` (CSV mentah, kode izin, kontak) dan `laporan/` tidak pernah ikut.
 
