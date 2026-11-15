@@ -3,13 +3,19 @@
 Ensiklopedia digital motif ukir Jepara. Folder ini = **aplikasi yang dipakai siswa**.
 (Berbeda dengan folder `pencatat/` = alat lapangan peneliti.)
 
+## Kode ditulis dalam TypeScript
+Kode asli ada di folder **`src/`** (di luar folder ini): `src/app.ts` dan `src/sw.ts`.
+Perintah `npm run build` (dari folder ISPO) menerjemahkannya menjadi `app.js` dan `sw.js` di folder ini.
+**Jangan ubah `app.js` / `sw.js` langsung**, karena perubahan akan tertimpa saat diterjemahkan ulang.
+Pertama kali di laptop baru: pasang Node.js (`winget install OpenJS.NodeJS.LTS`), lalu `npm install` di folder ISPO.
+
 ## Isi folder
 | File | Fungsi |
 |---|---|
 | `index.html` | Kerangka halaman |
-| `app.js` | Otak aplikasi: beranda, Perpustakaan Motif (cari/filter/detail), simpan offline |
+| `app.js` | Hasil terjemahan `src/app.ts`: beranda, Perpustakaan Motif (cari/filter/detail), simpan offline |
 | `gaya.css` | Tampilan (untuk HP dulu) |
-| `sw.js` | Service worker = penyimpan offline |
+| `sw.js` | Hasil terjemahan `src/sw.ts`: service worker = penyimpan offline |
 | `manifest.webmanifest`, `ikon-*.png` | Supaya bisa dipasang di layar HP seperti aplikasi |
 | `data/motif.json`, `foto/*.webp` | **Dibuat otomatis oleh `build.py`** — jangan diedit tangan |
 
@@ -19,6 +25,7 @@ Aplikasi otomatis menampilkan motif baru saat dibuka dengan internet.
 
 ## Mencoba di laptop
 ```
+npm run build          (dari folder ISPO, setiap habis mengubah src/*.ts)
 cd aplikasi
 python -m http.server 8000
 ```
@@ -45,7 +52,7 @@ Proposal 3.2 menyebut "hosting statis sekolah atau layanan gratis" → dipakai *
 > Yang terkirim **hanya** isi folder `aplikasi/`. Folder `data/` (CSV mentah, kode izin, kontak) dan `laporan/` tidak pernah ikut.
 
 ## Kalau kode diubah
-Naikkan `VERSI` di `sw.js` (mis. `woodtech-v1.0` → `woodtech-v1.1`) supaya HP mengambil versi baru.
+Naikkan `VERSI` di `src/sw.ts` (mis. `woodtech-v1.1` → `woodtech-v1.2`), lalu `npm run build`, supaya HP mengambil versi baru.
 Data/foto **tidak** perlu naik versi.
 
 ## Lencana bulat di pojok kanan atas
