@@ -151,8 +151,23 @@ async function muatData() {
     if (!res.ok)
         throw new Error('Gagal memuat data (' + res.status + ')');
     const d = (await res.json());
-    d.entri = (d.entri || []).slice().sort((a, b) => a.kode.localeCompare(b.kode));
+    d.entri = (Array.isArray(d.entri) ? d.entri : [])
+        .filter(e => e && typeof e.kode === 'string' && KODE_SAH.test(e.kode))
+        .map(e => ({ ...e, foto: saringFoto(e.foto) }))
+        .sort((a, b) => a.kode.localeCompare(b.kode));
     return d;
+}
+/* KEAMANAN: data hanya boleh menunjuk foto di folder foto/ milik aplikasi sendiri.
+   Alamat lain (mis. "javascript:", situs luar) dibuang, walau datanya pernah salah ketik/diubah orang. */
+const KODE_SAH = /^M\d{2,3}$/;
+const FOTO_SAH = /^foto\/[A-Za-z0-9_-]+\.webp(\?v=[0-9a-f]{1,16})?$/;
+function saringFoto(foto) {
+    const hasil = {};
+    for (const [sudut, src] of Object.entries(foto || {})) {
+        if (typeof src === 'string' && FOTO_SAH.test(src))
+            hasil[sudut] = src;
+    }
+    return hasil;
 }
 /* ------------------------------------------------------------------ pengatur layar (router)
    Alamat setelah tanda # menentukan layar:
@@ -233,7 +248,7 @@ function layarBeranda() {
       <a href="#/d">${segera}${ikon('mik')}Misi Wawancara<small>Jadi peneliti</small></a>
     </nav>
 
-    ${adaContoh() ? `<p class="kotak-info" style="margin-top:16px">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : ''}
+    ${adaContoh() ? `<p class="kotak-info jarak-atas">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : ''}
 
     ${terbaru.length ? `
     <div class="judul-bagian"><h2>Koleksi terbaru</h2><a href="#/motif">Lihat semua ›</a></div>

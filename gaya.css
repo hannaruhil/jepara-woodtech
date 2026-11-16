@@ -277,3 +277,7 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--utama); fo
 #penampil .tutup { position: absolute; top: max(8px, env(safe-area-inset-top)); right: 8px; color: #fff; margin: 0; }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* Pengganti gaya sisipan (style="...") — diblokir oleh aturan keamanan CSP */
+.sprite { position: absolute; }
+.jarak-atas { margin-top: 16px; }

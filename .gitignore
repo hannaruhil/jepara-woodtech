@@ -1,0 +1,15 @@
+# KEAMANAN: berkas-berkas ini TIDAK BOLEH ikut ke GitHub (publik)
+*.csv
+*.xlsx
+*.zip
+*.jpg
+*.jpeg
+*.heic
+*.mp3
+*.m4a
+*.wav
+*.py
+.env
+.env.*
+*.key
+*.pem
