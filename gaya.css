@@ -322,14 +322,22 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--utama); fo
 .g-daun.kanan svg { transform: scaleX(-1); }
 .g-bayang { flex: none; width: min(320px, 76vw); height: 18px; margin-top: -18px; border-radius: 50%; background: rgba(0,0,0,.45); filter: blur(6px); }
 
-.g-tombol { appearance: none; border: 0; cursor: pointer; font: 800 clamp(19px, 3vw, 24px)/1 var(--huruf); color: #3a1f0d;
-  background: linear-gradient(#f0a257, var(--g-jati)); padding: 16px 38px; border-radius: 18px; min-height: 56px;
-  box-shadow: 0 6px 0 #9c5420, 0 12px 22px rgba(0,0,0,.35); display: inline-flex; align-items: center; gap: 12px;
-  transition: transform .12s, box-shadow .12s; }
+/* Tombol = papan kuningan berukir (sudut terpotong seperti bingkai ukir, garis ukir di dalam, ikon kunci) */
+.g-tombol { appearance: none; border: 0; cursor: pointer; position: relative; overflow: hidden;
+  font: 800 clamp(17px, 2.6vw, 20px)/1 var(--huruf); letter-spacing: .14em; text-transform: uppercase; color: #3b200e;
+  background: linear-gradient(180deg, #f6dca0 0%, #e7b866 45%, #c98d3c 100%);
+  padding: 18px 34px 18px 28px; min-height: 58px; display: inline-flex; align-items: center; gap: 12px;
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  outline: 1.5px solid rgba(91,52,22,.55); outline-offset: -7px;
+  filter: drop-shadow(0 4px 0 #7a4a1e) drop-shadow(0 10px 14px rgba(0,0,0,.4));
+  transition: transform .12s, filter .12s; }
+.g-tombol::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,250,235,.55), transparent); transform: skewX(-20deg); }
+.g-tombol:hover::after { left: 120%; transition: left .7s ease; }
 .g-tombol:hover { transform: translateY(-2px); }
-.g-tombol:active { transform: translateY(4px); box-shadow: 0 2px 0 #9c5420, 0 6px 12px rgba(0,0,0,.35); }
-.g-tombol:focus-visible { outline: 3px solid var(--g-krem); outline-offset: 4px; }
-.g-tombol svg { width: 22px; height: 22px; }
+.g-tombol:active { transform: translateY(3px); filter: drop-shadow(0 1px 0 #7a4a1e) drop-shadow(0 4px 8px rgba(0,0,0,.4)); }
+.g-tombol:focus-visible { outline: 3px solid #3b200e; outline-offset: -8px; }
+.g-tombol svg { width: 24px; height: 24px; }
 .g-kaki { margin: 6px 0 0; font-size: 13px; font-weight: 600; line-height: 1.6; color: rgba(251,243,230,.7); letter-spacing: .02em; }
 .g-kaki b { color: var(--g-krem); }
 
