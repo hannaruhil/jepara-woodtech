@@ -652,7 +652,8 @@ addEventListener('hashchange', () => { sudahPindahLayar = true; tampilkan(); });
 /* ------------------------------------------------------------------ GERBANG PEMBUKA
    Pintu gebyok di index.html (#gerbang). Tampil setiap kali aplikasi dibuka dari beranda.
    Kalau yang dibuka tautan langsung (mis. #/motif/M01 dari teman), gerbang dilewati. */
-const LAMA_BUKA_MS = 1600; // sama dengan lama animasi di gaya.css
+const PUTAR_KUNCI_MS = 550; // lama animasi kunci diputar (gaya.css: g-putar-kunci)
+const LAMA_BUKA_MS = 1600; // lama pintu terbuka + memudar (gaya.css)
 /** Samakan lebar tulisan "JEPARA" dengan "Woodtech" supaya judul seimbang. */
 function samakanLebarJudul() {
     const j1 = $mungkin('#g-j1'), j2 = $mungkin('#g-j2');
@@ -691,9 +692,12 @@ function siapkanGerbang() {
         if (sudahDibuka)
             return;
         sudahDibuka = true;
-        gerbang.classList.add('buka');
         const pelan = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        setTimeout(() => { tutup(); isi.focus({ preventScroll: true }); }, pelan ? 350 : LAMA_BUKA_MS);
+        const jedaKunci = pelan ? 0 : PUTAR_KUNCI_MS;
+        gerbang.classList.add('putar'); // 1) kunci diputar
+        setTimeout(() => gerbang.classList.add('buka'), jedaKunci); // 2) pintu terbuka
+        setTimeout(() => { tutup(); isi.focus({ preventScroll: true }); }, // 3) masuk beranda
+        jedaKunci + (pelan ? 350 : LAMA_BUKA_MS));
     };
     $('#g-buka').addEventListener('click', buka);
     $('#g-pintu').addEventListener('click', buka);
