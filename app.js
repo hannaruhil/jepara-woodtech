@@ -649,6 +649,56 @@ $('#tombol-kembali').addEventListener('click', kembali);
 // Garis tipis di bawah kepala hanya saat halaman sudah digulir (supaya bersih di atas)
 addEventListener('scroll', () => $('#kepala').classList.toggle('bergaris', window.scrollY > 4), { passive: true });
 addEventListener('hashchange', () => { sudahPindahLayar = true; tampilkan(); });
+/* ------------------------------------------------------------------ GERBANG PEMBUKA
+   Pintu gebyok di index.html (#gerbang). Tampil setiap kali aplikasi dibuka dari beranda.
+   Kalau yang dibuka tautan langsung (mis. #/motif/M01 dari teman), gerbang dilewati. */
+const LAMA_BUKA_MS = 1600; // sama dengan lama animasi di gaya.css
+/** Samakan lebar tulisan "JEPARA" dengan "Woodtech" supaya judul seimbang. */
+function samakanLebarJudul() {
+    const j1 = $mungkin('#g-j1'), j2 = $mungkin('#g-j2');
+    if (!j1 || !j2)
+        return;
+    j1.style.fontSize = '';
+    const ukuran = parseFloat(getComputedStyle(j1).fontSize);
+    const w1 = j1.getBoundingClientRect().width, w2 = j2.getBoundingClientRect().width;
+    if (w1 && w2)
+        j1.style.fontSize = `${ukuran * w2 / w1}px`;
+}
+function siapkanGerbang() {
+    const gerbang = $mungkin('#gerbang');
+    if (!gerbang)
+        return;
+    const kepala = $('#kepala');
+    const tutup = () => {
+        gerbang.remove();
+        kepala.inert = false;
+        isi.inert = false;
+        document.body.classList.remove('terkunci');
+        removeEventListener('resize', samakanLebarJudul);
+    };
+    if (bagianAlamat().length) {
+        tutup();
+        return;
+    } // tautan langsung → tanpa gerbang
+    kepala.inert = true; // selama gerbang tampil, isi di belakangnya tidak bisa disentuh/difokus
+    isi.inert = true;
+    document.body.classList.add('terkunci');
+    samakanLebarJudul();
+    void document.fonts?.ready.then(samakanLebarJudul);
+    addEventListener('resize', samakanLebarJudul);
+    let sudahDibuka = false;
+    const buka = () => {
+        if (sudahDibuka)
+            return;
+        sudahDibuka = true;
+        gerbang.classList.add('buka');
+        const pelan = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        setTimeout(() => { tutup(); isi.focus({ preventScroll: true }); }, pelan ? 350 : LAMA_BUKA_MS);
+    };
+    $('#g-buka').addEventListener('click', buka);
+    $('#g-pintu').addEventListener('click', buka);
+}
+siapkanGerbang();
 async function mulai() {
     if (statusOffline.didukung) {
         try {

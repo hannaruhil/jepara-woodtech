@@ -27,7 +27,71 @@
   <symbol id="i-cari" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
   <symbol id="i-kembali" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
   <symbol id="i-kutip" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18v-5.5C4 8.4 6.2 5.8 10 5l.7 1.6C8.4 7.5 7.4 9 7.3 11H10v7zm10 0v-5.5c0-4.1 2.2-6.7 6-7.5l.7 1.6c-2.3.9-3.3 2.4-3.4 4.4H20v7z"/></symbol>
+  <!-- Untuk gerbang pembuka: relung (sulur + daun + buah wuni), daun pintu gebyok, pola latar -->
+  <symbol id="g-relung" viewBox="0 0 100 150">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M50 146 C50 112 22 104 24 76 C26 52 54 50 56 66 C57 77 44 80 41 71"/>
+      <path d="M50 120 C58 96 82 90 80 64 C78 44 58 42 56 54"/>
+      <path d="M24 76 C10 66 8 48 18 36 C20 54 28 62 34 64"/>
+      <path d="M80 64 C92 54 94 36 84 26 C82 42 76 50 70 52"/>
+      <path d="M50 146 C40 140 30 142 22 132 C34 128 44 132 50 140"/>
+      <path d="M50 146 C60 140 70 142 78 132 C66 128 56 132 50 140"/>
+    </g>
+    <g fill="currentColor"><circle cx="46" cy="30" r="4.5"/><circle cx="55" cy="26" r="4.5"/><circle cx="52" cy="35" r="4.5"/></g>
+  </symbol>
+  <symbol id="g-daun-pintu" viewBox="0 0 110 230">
+    <rect x="1" y="1" width="108" height="228" rx="3" fill="#7a4b2a" stroke="#3a2212" stroke-width="2"/>
+    <g stroke="#6a3f22" stroke-width="1"><path d="M8 4v222M30 4v222M62 4v222M90 4v222"/></g>
+    <rect x="9" y="10" width="92" height="128" rx="6" fill="#5c3820" stroke="#e0ad5f" stroke-width="2"/>
+    <use href="#g-relung" x="17" y="16" width="76" height="116" color="#e0ad5f"/>
+    <rect x="9" y="148" width="92" height="72" rx="6" fill="#5c3820" stroke="#e0ad5f" stroke-width="2"/>
+    <g fill="none" stroke="#e0ad5f" stroke-width="2.4" stroke-linecap="round">
+      <path d="M55 160 C70 170 70 196 55 208 C40 196 40 170 55 160Z"/>
+      <path d="M55 176 C62 180 62 190 55 194 C48 190 48 180 55 176Z"/>
+      <path d="M22 184 C30 176 38 180 40 184 M88 184 C80 176 72 180 70 184"/>
+    </g>
+    <circle cx="101" cy="122" r="4" fill="#e0ad5f" stroke="#7a4f1f"/>
+  </symbol>
+  <pattern id="g-pola-sulur" width="64" height="64" patternUnits="userSpaceOnUse">
+    <g fill="none" stroke="#e0ad5f" stroke-opacity=".13" stroke-width="2" stroke-linecap="round">
+      <path d="M8 56 C8 38 28 36 28 24 C28 14 16 14 16 22 C16 27 22 28 23 24"/>
+      <path d="M40 24 C40 6 60 4 60 -8"/>
+      <path d="M40 88 C40 70 60 68 60 56 C60 46 48 46 48 54 C48 59 54 60 55 56"/>
+    </g>
+    <g fill="#e0ad5f" fill-opacity=".13"><circle cx="44" cy="40" r="2.6"/><circle cx="49" cy="38" r="2.6"/><circle cx="47" cy="43" r="2.6"/></g>
+  </pattern>
 </svg>
+
+<!-- GERBANG PEMBUKA: pintu gebyok yang terbuka saat "Buka Gerbang" ditekan.
+     Muncul setiap kali aplikasi dibuka dari beranda; dilewati bila membuka tautan motif langsung (diatur app.ts). -->
+<section id="gerbang" aria-label="Pembuka JEPARA Woodtech">
+  <svg class="g-pola" aria-hidden="true"><rect width="100%" height="100%" fill="url(#g-pola-sulur)"/></svg>
+  <div class="g-sorot" aria-hidden="true"></div>
+  <span class="g-lencana"><img src="logo-snt.png" alt="Logo SNT" width="42" height="33">SNT 14 JEPARA</span>
+  <div class="g-cap">
+    <h1 class="g-judul"><span class="g-j1" id="g-j1">JEPARA</span><span class="g-j2" id="g-j2">Woodtech</span></h1>
+    <p class="g-sub">Ensiklopedia Motif Ukir</p>
+  </div>
+  <div class="g-pintu" id="g-pintu" aria-hidden="true">
+    <div class="g-cahaya"></div>
+    <svg class="g-kusen" viewBox="0 0 300 330">
+      <path d="M150 6 C118 6 96 26 86 50 L214 50 C204 26 182 6 150 6Z" fill="#5c3820" stroke="#e0ad5f" stroke-width="2.5"/>
+      <use href="#g-relung" x="122" y="12" width="56" height="38" color="#e0ad5f"/>
+      <rect x="22" y="50" width="256" height="24" rx="3" fill="#6b4024" stroke="#3a2212" stroke-width="2"/>
+      <path d="M40 62 C52 54 64 70 76 62 S100 54 112 62 S136 70 150 62 S176 54 188 62 S212 70 224 62 S248 54 260 62" fill="none" stroke="#e0ad5f" stroke-width="2" stroke-linecap="round"/>
+      <rect x="22" y="74" width="17" height="250" fill="#6b4024" stroke="#3a2212" stroke-width="2"/>
+      <rect x="261" y="74" width="17" height="250" fill="#6b4024" stroke="#3a2212" stroke-width="2"/>
+      <rect x="12" y="318" width="276" height="10" rx="3" fill="#4f2f19"/>
+    </svg>
+    <div class="g-daun kiri"><svg viewBox="0 0 110 230" preserveAspectRatio="none"><use href="#g-daun-pintu"/></svg></div>
+    <div class="g-daun kanan"><svg viewBox="0 0 110 230" preserveAspectRatio="none"><use href="#g-daun-pintu"/></svg></div>
+  </div>
+  <div class="g-bayang" aria-hidden="true"></div>
+  <button type="button" class="g-tombol" id="g-buka">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>Buka Gerbang
+  </button>
+  <p class="g-kaki">Karya <b>Tim Siswa SNT 14 JEPARA</b><br>bersama para perajin ukir Desa Mulyoharjo</p>
+</section>
 
 <header id="kepala">
   <button type="button" class="ikon" id="tombol-kembali" aria-label="Kembali" hidden><svg><use href="#i-kembali"/></svg></button>
