@@ -344,28 +344,28 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 
 /* medalion utuh di tengah: tiap daun memperlihatkan setengahnya */
 .g-medalion { position: absolute; top: 50%; width: var(--g-d); height: var(--g-d); margin-top: calc(var(--g-d) / -2);
-  border-radius: 50%; background: url("gerbang/medalion-jalinan.webp") center / cover;
+  border-radius: 50%; background: url("gerbang/medalion-jalinan.webp?v=358cc050") center / cover;
   box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 8px #3a2414, 0 0 0 9.5px rgba(224,173,95,.55), 0 10px 26px rgba(0,0,0,.6); }
 .g-daun.kiri .g-medalion { right: calc(var(--g-d) / -2 - 12px); }
 .g-daun.kanan .g-medalion { left: calc(var(--g-d) / -2 - 12px); }
 /* panel luar (layar mendatar): kiri medalion bunga, kanan medalion sulur */
 .g-medalion-kecil { position: absolute; left: 50%; top: 50%; width: min(78%, calc((60cqh - var(--g-atas)) * .7)); aspect-ratio: 1;
-  transform: translate(-50%, -50%); border-radius: 50%; background: url("gerbang/medalion-bunga.webp") center / cover;
+  transform: translate(-50%, -50%); border-radius: 50%; background: url("gerbang/medalion-bunga.webp?v=c77b8e6e") center / cover;
   box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 7px #3a2414, 0 8px 20px rgba(0,0,0,.55); }
-.g-daun.kanan .g-medalion-kecil { background-image: url("gerbang/medalion-sulur.webp"); }
+.g-daun.kanan .g-medalion-kecil { background-image: url("gerbang/medalion-sulur.webp?v=2d2484aa"); }
 /* gagang pintu kuningan */
 .g-gagang { position: absolute; top: 62%; width: 12px; height: 46px; border-radius: 8px; background: linear-gradient(90deg, #c48838, #f8e0a8 50%, #c48838);
   box-shadow: 0 3px 6px rgba(0,0,0,.5); }
 .g-daun.kiri .g-gagang { right: 18px; }
 .g-daun.kanan .g-gagang { left: 18px; }
 
-/* ---- panel bawah gaya Gen Z: 4 ukiran asli BERBEDA (bunga renda, paviliun, bunga matahari, sulur)
-        + duotone cerah + stiker (kolaborasi budaya & anak muda) ---- */
+/* ---- panel bawah: 4 foto ukiran asli BERBEDA dengan WARNA ASLI (bunga renda, paviliun, bunga matahari, sulur)
+        + stiker gaya anak muda (kolaborasi budaya & generasi muda). Jangan diberi warna/filter. ---- */
 .g-genz { position: absolute; inset: 0; background-position: center; background-size: cover; }
-.g-genz.g1 { background-image: url("gerbang/genz-1.webp"); }
-.g-genz.g2 { background-image: url("gerbang/genz-2.webp"); }
-.g-genz.g3 { background-image: url("gerbang/genz-3.webp"); }
-.g-genz.g4 { background-image: url("gerbang/genz-4.webp"); }
+.g-genz.g1 { background-image: url("gerbang/ukir-bunga-renda.webp?v=15349711"); }
+.g-genz.g2 { background-image: url("gerbang/ukir-paviliun.webp?v=2c8dc936"); }
+.g-genz.g3 { background-image: url("gerbang/ukir-bunga-matahari.webp?v=a8c2ed5c"); }
+.g-genz.g4 { background-image: url("gerbang/ukir-sulur.webp?v=94317a0b"); }
 .g-stiker { position: absolute; left: 10px; bottom: 12px; max-width: calc(100% - 20px);
   font: 800 clamp(11px, 1.6vw, 14px)/1.15 var(--huruf); letter-spacing: .01em; color: #111;
   background: #fffdf5; border: 2px solid #111; border-radius: 9px; padding: 5px 10px 6px;
@@ -379,7 +379,7 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 .g-kunci-wadah { position: absolute; z-index: 2; left: 50%; top: 65.5%; transform: translate(calc(-100% + 36px), -50%);
   transform-origin: calc(100% - 36px) 50%; display: flex; align-items: center; transition: opacity .3s; }
 .g-plat { flex: none; position: relative; z-index: 1; width: 72px; height: 72px; margin-left: -22px; border-radius: 50%;
-  background: url("gerbang/medalion-bunga.webp") center / cover;
+  background: url("gerbang/medalion-bunga.webp?v=c77b8e6e") center / cover;
   box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 6px #3a2414, 0 6px 14px rgba(0,0,0,.55); pointer-events: none; }
 .g-plat::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 18px; margin: -9px 0 0 -5px;
   border-radius: 5px 5px 2px 2px; background: #120b06; box-shadow: 0 0 0 2px var(--g-emas); }

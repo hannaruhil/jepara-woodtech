@@ -13,12 +13,12 @@
    Data & foto TIDAK perlu naik versi — cukup jalankan build.py / terbitkan.py. */
 // Di dalam service worker, "self" adalah penjaga itu sendiri (bukan jendela halaman).
 const sw = self;
-const VERSI = 'woodtech-v1.16';
+const VERSI = 'woodtech-v1.17';
 const LEMARI_DATA = 'woodtech-data'; // data + foto (tidak dihapus saat versi naik)
 const BERKAS = ['./', './index.html', './app.js', './gaya.css', './manifest.webmanifest',
     './ikon-192.png', './ikon-512.png', './logo-snt.png',
     './gerbang/medalion-jalinan.webp', './gerbang/medalion-bunga.webp', './gerbang/medalion-sulur.webp',
-    './gerbang/genz-1.webp', './gerbang/genz-2.webp', './gerbang/genz-3.webp', './gerbang/genz-4.webp', './huruf/plus-jakarta-sans.woff2'];
+    './gerbang/ukir-bunga-renda.webp', './gerbang/ukir-paviliun.webp', './gerbang/ukir-bunga-matahari.webp', './gerbang/ukir-sulur.webp', './huruf/plus-jakarta-sans.woff2'];
 const BATAS_TUNGGU_MS = 4000;
 sw.addEventListener('install', ev => {
     ev.waitUntil((async () => {
