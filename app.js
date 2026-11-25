@@ -17,9 +17,9 @@
    Semua tulisan yang "khas Jepara" dikumpulkan di sini. Sekolah/daerah lain yang meniru
    proyek ini cukup mengubah bagian ini (lihat panduan replikasi).
    JANGAN tulis nama lengkap siswa tanpa izin tertulis orang tua. */
-const TIM = 'Tim Siswa Peneliti JEPARA WOODTECH'; // nama tim yang tampil di web
-const DAERAH = 'Jepara'; // dipakai di sapaan beranda
-const LOKASI = 'Desa Mulyoharjo, Jepara'; // tempat wawancara perajin
+const TIM = 'Tim Siswa SNT 14 JEPARA'; // nama tim yang tampil di web
+const DAERAH = 'JEPARA'; // dipakai di sapaan beranda
+const LOKASI = 'Desa Mulyoharjo, JEPARA'; // tempat wawancara perajin
 const KEGIATAN = 'penelitian ISPO 2026 (bidang Komputer)';
 /* ------------------------------------------------------------------ pengaturan teknis */
 const ALAMAT_DATA = 'data/motif.json';
@@ -29,6 +29,7 @@ const URUTAN_SUDUT = ['depan', 'samping', 'detail'];
 let DATA = { dibuat: '', jumlah: 0, entri: [] };
 let dataSiap = false;
 const saring = { cari: '', teknik: '', kayu: '' }; // pilihan pencarian di Perpustakaan
+let fokusCari = false; // true = langsung fokus ke kotak cari saat Perpustakaan dibuka
 let gulirPerpustakaan = 0; // posisi gulir daftar, dikembalikan saat kembali
 let sudahPindahLayar = false; // untuk tombol ← (pakai riwayat browser bila ada)
 /* ------------------------------------------------------------------ alat bantu */
@@ -126,17 +127,15 @@ function kartuMotif(e) {
         </span>
       </a>`;
 }
-/** Satu baris motif (daftar "Koleksi terbaru" di beranda). */
-function barisMotif(e) {
+/** Satu kartu kecil untuk deretan "Koleksi terbaru" (bisa digeser) di beranda. */
+function kartuGeser(e) {
     const foto = fotoUtama(e);
+    const info = [...(e.teknik || []).slice(0, 1), ...(e.kayu || []).slice(0, 1)].map(hurufBesarAwal).join(' · ');
     return `
-      <a class="baris-motif" href="#/motif/${encodeURIComponent(e.kode)}">
-        <span class="foto">${foto ? `<img src="${aman(foto)}" alt="" loading="lazy" decoding="async">` : ''}</span>
-        <span class="teks">
-          <b>${aman(judul(e))} ${e.contoh ? lencanaContoh : ''}</b>
-          <span class="tag">${[...(e.teknik || []), ...(e.kayu || [])].map(t => `<i>${aman(t)}</i>`).join('')}</span>
-        </span>
-        <span class="panah" aria-hidden="true">›</span>
+      <a class="kartu kartu-geser" href="#/motif/${encodeURIComponent(e.kode)}">
+        <span class="foto">${foto ? `<img src="${aman(foto)}" alt="" loading="lazy" decoding="async">` : '<span class="tanpa-foto">Foto belum tersedia</span>'}</span>
+        <b>${aman(judul(e))}</b>${e.contoh ? lencanaContoh : ''}
+        <small>${aman(info)}</small>
       </a>`;
 }
 const LANGKAH = [
@@ -225,51 +224,72 @@ function layarBeranda() {
     isi.dataset.layar = 'beranda';
     const pilih = motifPilihan();
     const fotoPilih = pilih ? fotoUtama(pilih) : undefined;
-    const terbaru = DATA.entri.slice().reverse().slice(0, 4);
+    const terbaru = DATA.entri.slice().reverse().slice(0, 6);
     const p = jumlahPerajin();
-    const segera = '<span class="segera">segera</span>';
+    const gembok = `<span class="gembok">${ikon('gembok')}Desember</span>`;
+    // Ringkasan pendek untuk "Motif hari ini": awal makna dari perajin, atau nama Indonesia
+    const ringkas = (e) => {
+        const m = e.makna_cerita;
+        if (m && !maknaTidakDiketahui(m))
+            return m.length > 110 ? m.slice(0, 107).trimEnd() + '…' : m;
+        return namaIndonesia(e);
+    };
+    const meta = (e) => [e.kode, ...(e.teknik || []).slice(0, 1), ...(e.kayu || []).slice(0, 1)].map(hurufBesarAwal).join(' · ');
     isi.innerHTML = `
-    <section class="sapa">
-      <h1>Yuk kenali <mark>ukiran</mark> ${aman(DAERAH)}!</h1>
-      <p>Dari perajin ${aman(LOKASI)}</p>
+    <section class="sambut">
+      <h1>Kenali motif ukir <span>${aman(DAERAH)}</span> langsung dari perajinnya</h1>
+      <p>Foto, makna, dan cerita setiap motif dari bengkel di ${aman(LOKASI)}.</p>
+      <a class="cari-pintas" href="#/motif" id="cari-pintas">${ikon('cari')}Cari motif, kayu, atau teknik…</a>
     </section>
 
-    ${pilih ? `<a class="pajang" href="#/motif/${encodeURIComponent(pilih.kode)}">
-        ${fotoPilih ? `<img src="${aman(fotoPilih)}" alt="" decoding="async" fetchpriority="high">` : ''}
-        <span class="stiker">Motif hari ini ✦</span>
-        ${pilih.contoh ? lencanaContoh : ''}
-        <span class="nama"><small>${aman(pilih.kode)}${pilih.teknik?.[0] ? ' · ' + aman(pilih.teknik[0]) : ''}</small>${aman(judul(pilih))}</span>
-      </a>` : ''}
+    ${adaContoh() ? `<p class="kotak-info">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : ''}
 
-    <nav class="ubin" aria-label="Menu utama">
-      <a class="utama" href="#/motif">${ikon('buku')}Perpustakaan Motif<small>${DATA.entri.length} motif</small></a>
-      <a href="#/c">${segera}${ikon('bintang')}Game Tebak Motif<small>Kumpulkan lencana</small></a>
-      <a href="#/b">${segera}${ikon('toko')}Katalog Perajin<small>${p ? p + ' perajin' : 'Kenali perajinnya'}</small></a>
-      <a href="#/d">${segera}${ikon('mik')}Misi Wawancara<small>Jadi peneliti</small></a>
-    </nav>
+    ${pilih ? `
+    <section>
+      <h2 class="judul-bagian">Motif hari ini</h2>
+      <a class="kartu pilihan" href="#/motif/${encodeURIComponent(pilih.kode)}">
+        <span class="bingkai">${fotoPilih
+        ? `<img src="${aman(fotoPilih)}" alt="" decoding="async" fetchpriority="high">`
+        : '<span class="tanpa-foto">Foto belum tersedia</span>'}</span>
+        <span class="teks">
+          <span class="meta">${aman(meta(pilih))}</span>
+          <b>${aman(judul(pilih))} ${pilih.contoh ? lencanaContoh : ''}</b>
+          ${ringkas(pilih) ? `<span class="ringkas">${aman(ringkas(pilih))}</span>` : ''}
+          <span class="lanjut">Lihat motif ›</span>
+        </span>
+      </a>
+    </section>` : ''}
 
-    ${adaContoh() ? `<p class="kotak-info jarak-atas">Data yang tampil sekarang masih <b>CONTOH</b>, bukan data asli dari perajin.</p>` : ''}
+    <section>
+      <h2 class="judul-bagian">Jelajahi</h2>
+      <nav class="menu" aria-label="Menu utama">
+        <a class="kartu" href="#/motif"><span class="ikon-bulat">${ikon('buku')}</span><b>Perpustakaan Motif</b><small>${DATA.entri.length} motif tersimpan</small></a>
+        <a class="kartu dikunci" href="#/c">${gembok}<span class="ikon-bulat">${ikon('bintang')}</span><b>Game Tebak Motif</b><small>Tebak dan susun motif</small></a>
+        <a class="kartu dikunci" href="#/b">${gembok}<span class="ikon-bulat">${ikon('toko')}</span><b>Katalog Perajin</b><small>${p ? p + ' perajin' : 'Kenali perajin & karyanya'}</small></a>
+        <a class="kartu dikunci" href="#/d">${gembok}<span class="ikon-bulat">${ikon('mik')}</span><b>Misi Wawancara</b><small>Bertanya ke perajin</small></a>
+      </nav>
+    </section>
 
     ${terbaru.length ? `
-    <div class="judul-bagian"><h2>Koleksi terbaru</h2><a href="#/motif">Lihat semua ›</a></div>
-    <div class="daftar-baris">${terbaru.map(barisMotif).join('')}</div>` : ''}
+    <section>
+      <h2 class="judul-bagian">Koleksi terbaru <a href="#/motif">Lihat semua ›</a></h2>
+      <div class="geser-koleksi">${terbaru.map(kartuGeser).join('')}</div>
+    </section>` : ''}
 
-    <section class="karya" aria-labelledby="judul-karya">
-      <p class="label-kecil">Karya Tim Siswa</p>
-      <h2 id="judul-karya">Dicatat oleh siswa, dituturkan oleh perajin</h2>
-      <p>Setiap motif di sini didokumentasikan langsung oleh siswa SMP: mewawancarai perajin,
-         memotret ukiran, dan mencatat maknanya dengan kata-kata perajin sendiri.</p>
-      <ol class="langkah">
-        ${LANGKAH.map(([j], n) => `<li><span class="no">${n + 1}</span>${j}</li>`).join('')}
-      </ol>
-      <a class="tautan-panah" href="#/karya">Lihat di balik layar ›</a>
+    <section class="kotak-tentang">
+      <h2>Di balik ensiklopedia ini</h2>
+      <p>Setiap motif didokumentasikan langsung di bengkel: perajin diwawancarai, ukiran difoto dari tiga sudut,
+         dan maknanya ditulis sesuai penuturan perajin.</p>
+      <a href="#/karya">Cara kami mencatat motif ›</a>
     </section>
 
     <footer class="kaki">
-      <a href="#/karya">Di balik layar</a> · <a href="#/tentang">Tentang</a><br>
-      ${aman(TIM)} · data ${aman(DATA.dibuat || '-')}<br>
+      Karya <b>${aman(TIM)}</b><br>bersama para perajin ukir ${aman(LOKASI)}<br>
+      <a href="#/karya">Di balik layar</a> · <a href="#/tentang">Tentang</a> · data ${aman(DATA.dibuat || '-')}<br>
       <span class="en" lang="en">Digital Encyclopedia of ${aman(DAERAH)} Wood Carving Motifs</span>
     </footer>`;
+    // Ketuk kotak cari di beranda → buka Perpustakaan dengan kotak cari siap diketik
+    $mungkin('#cari-pintas')?.addEventListener('click', () => { fokusCari = true; });
 }
 /* ------------------------------------------------------------------ MODUL A: PERPUSTAKAAN */
 function layarPerpustakaan() {
@@ -283,7 +303,6 @@ function layarPerpustakaan() {
       </div>` : '';
     isi.innerHTML = `
     <header class="kepala-layar">
-      <p class="label-kecil">Modul A</p>
       <h1>Perpustakaan Motif</h1>
       <p>Koleksi motif ukir hasil dokumentasi tim siswa bersama perajin ${LOKASI}.</p>
     </header>
@@ -308,6 +327,10 @@ function layarPerpustakaan() {
         isiDaftar();
     }));
     isiDaftar();
+    if (fokusCari) {
+        fokusCari = false;
+        $('#cari').focus();
+    }
 }
 /** Apakah entri cocok dengan pencarian + filter? Semua kata yang diketik harus ditemukan. */
 function cocok(e) {
@@ -488,7 +511,7 @@ function layarTentang() {
     isi.innerHTML = `
     <section class="teks-panjang">
       <h1>Tentang JEPARA WOODTECH</h1>
-      <p>Ensiklopedia digital motif ukir Jepara. Isinya dikumpulkan dari wawancara dengan perajin di
+      <p>Ensiklopedia digital motif ukir JEPARA. Isinya dikumpulkan dari wawancara dengan perajin di
          ${LOKASI}, untuk ${KEGIATAN}.</p>
       <h2>Privasi</h2>
       <ul>
@@ -502,7 +525,7 @@ function layarTentang() {
       <p id="info-offline" class="redup"></p>
       <p class="redup">Data diperbarui: ${aman(DATA.dibuat || '-')} · ${DATA.entri.length} motif</p>
       <h2 lang="en">In English</h2>
-      <p class="en-ringkas" lang="en">JEPARA WOODTECH is a digital encyclopedia of Jepara wood carving motifs,
+      <p class="en-ringkas" lang="en">JEPARA WOODTECH is a digital encyclopedia of JEPARA wood carving motifs,
          built by junior high school students for ISPO 2026. Students interviewed carvers in ${LOKASI},
          photographed each motif from three angles, and recorded its meaning in the carvers' own words.
          The app works offline, needs no account, and shows no ads. Content is in Indonesian.</p>
@@ -516,7 +539,6 @@ function layarKarya() {
     const kayu = daftarUnik('kayu').length, teknik = daftarUnik('teknik').length;
     isi.innerHTML = `
     <section class="teks-panjang">
-      <p class="label-kecil">Karya Tim Siswa</p>
       <h1>Di Balik Layar</h1>
       <p class="pembuka">Ensiklopedia ini bukan disalin dari internet. Setiap motif dikumpulkan sendiri oleh
          siswa SMP yang datang ke bengkel perajin di ${LOKASI}.</p>
