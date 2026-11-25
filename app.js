@@ -673,28 +673,34 @@ async function simpanSemuaFotoSekali() {
 function perbaruiLencanaOffline() {
     const l = $('#lencana-offline');
     const s = statusOffline;
-    let ikon, teks, keadaan;
+    // Tulisan di kepala aplikasi: [ikon, versi pendek (HP sempit), versi panjang]; teks = penjelasan lengkap
+    let label, teks, keadaan;
     if (!s.didukung) {
-        ikon = '!';
+        label = ['!', 'Gagal', 'Tidak bisa offline'];
         keadaan = 'gagal';
         teks = 'Browser ini tidak bisa menyimpan aplikasi untuk offline.';
     }
     else if (!navigator.onLine) {
-        ikon = '✈';
+        label = ['✈', 'Luring', 'Tanpa internet'];
         keadaan = 'luring';
         teks = 'Sedang tanpa internet — memakai simpanan di HP.';
     }
     else if (s.siap) {
-        ikon = '✓';
+        label = ['✓', 'Offline', 'Siap offline'];
         keadaan = 'siap';
         teks = `Siap offline: ${s.total} foto tersimpan di HP.`;
     }
     else {
-        ikon = '…';
+        label = ['…', `${s.tersimpan}/${s.total}`, `Menyimpan ${s.tersimpan}/${s.total}`];
         keadaan = 'proses';
         teks = `Menyimpan untuk offline: ${s.tersimpan}/${s.total} foto.`;
     }
-    l.textContent = ikon;
+    l.replaceChildren(...label.map((t, n) => {
+        const b = document.createElement('span');
+        b.className = ['lo-ikon', 'lo-pendek', 'lo-panjang'][n];
+        b.textContent = t;
+        return b;
+    }));
     l.title = teks;
     l.dataset.keadaan = keadaan;
     const info = $mungkin('#info-offline');
