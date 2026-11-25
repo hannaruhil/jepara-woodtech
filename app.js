@@ -694,7 +694,7 @@ function perbaruiLencanaOffline() {
         teks = 'Sedang tanpa internet — memakai simpanan di HP.';
     }
     else if (!sudahTerpasang()) {
-        label = ['📲', 'Pasang', 'Pasang di HP'];
+        label = ['↓', 'Instal', 'Instal Aplikasi'];
         keadaan = 'pasang';
         teks = s.siap ? `Semua ${s.total} foto sudah tersimpan di HP ini.` : `Menyimpan foto untuk offline: ${s.tersimpan}/${s.total}.`;
     }
@@ -741,7 +741,7 @@ async function ketukPasang() {
     }
     const d = $('#panduan-pasang'); // selain itu → panduan langkah demi langkah
     isiStatusPasang($('#pasang-status'));
-    $('#pasang-judul').textContent = sudahTerpasang() ? 'JEPARA Woodtech sudah terpasang' : 'Pasang JEPARA Woodtech di HP';
+    $('#pasang-judul').textContent = sudahTerpasang() ? 'Aplikasi JEPARA Woodtech sudah terinstal' : 'Instal aplikasi JEPARA Woodtech';
     $('#pasang-langkah').hidden = sudahTerpasang();
     d.showModal();
 }
