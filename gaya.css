@@ -348,22 +348,19 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
   box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 8px #3a2414, 0 0 0 9.5px rgba(224,173,95,.55), 0 10px 26px rgba(0,0,0,.6); }
 .g-daun.kiri .g-medalion { right: calc(var(--g-d) / -2 - 12px); }
 .g-daun.kanan .g-medalion { left: calc(var(--g-d) / -2 - 12px); }
-/* panel bunga menyambung di kedua daun */
-.g-bunga { position: absolute; top: 0; bottom: 0; width: calc(200% + 24px); background: url("gerbang/panel-bunga.webp") center / cover; }
-.g-daun.kiri .g-bunga { left: 0; }
-.g-daun.kanan .g-bunga { right: 0; }
-/* panel luar (layar mendatar) */
+/* panel luar (layar mendatar): kiri medalion bunga, kanan medalion sulur */
 .g-medalion-kecil { position: absolute; left: 50%; top: 50%; width: min(78%, calc((60cqh - var(--g-atas)) * .7)); aspect-ratio: 1;
   transform: translate(-50%, -50%); border-radius: 50%; background: url("gerbang/medalion-bunga.webp") center / cover;
   box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 7px #3a2414, 0 8px 20px rgba(0,0,0,.55); }
-.g-bunga-luar { position: absolute; inset: 0; background: url("gerbang/panel-bunga.webp") center / cover; }
+.g-daun.kanan .g-medalion-kecil { background-image: url("gerbang/medalion-sulur.webp"); }
 /* gagang pintu kuningan */
 .g-gagang { position: absolute; top: 62%; width: 12px; height: 46px; border-radius: 8px; background: linear-gradient(90deg, #c48838, #f8e0a8 50%, #c48838);
   box-shadow: 0 3px 6px rgba(0,0,0,.5); }
 .g-daun.kiri .g-gagang { right: 18px; }
 .g-daun.kanan .g-gagang { left: 18px; }
 
-/* ---- panel bawah gaya Gen Z: ukiran asli + duotone cerah + stiker (kolaborasi budaya & anak muda) ---- */
+/* ---- panel bawah gaya Gen Z: 4 ukiran asli BERBEDA (bunga renda, paviliun, bunga matahari, sulur)
+        + duotone cerah + stiker (kolaborasi budaya & anak muda) ---- */
 .g-genz { position: absolute; inset: 0; background-position: center; background-size: cover; }
 .g-genz.g1 { background-image: url("gerbang/genz-1.webp"); }
 .g-genz.g2 { background-image: url("gerbang/genz-2.webp"); }
