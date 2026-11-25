@@ -29,15 +29,6 @@
   <symbol id="i-kutip" viewBox="0 0 24 24"><path fill="currentColor" d="M4 18v-5.5C4 8.4 6.2 5.8 10 5l.7 1.6C8.4 7.5 7.4 9 7.3 11H10v7zm10 0v-5.5c0-4.1 2.2-6.7 6-7.5l.7 1.6c-2.3.9-3.3 2.4-3.4 4.4H20v7z"/></symbol>
   <symbol id="i-gembok" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
   <symbol id="i-pintu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 21V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v15M2 21h20M12 4v17"/><path d="M9.5 12.5v1M14.5 12.5v1"/></g></symbol>
-  <!-- Pola sulur untuk latar aplikasi & ambang gerbang -->
-  <pattern id="g-pola-sulur" width="64" height="64" patternUnits="userSpaceOnUse">
-    <g fill="none" stroke="#e0ad5f" stroke-opacity=".13" stroke-width="2" stroke-linecap="round">
-      <path d="M8 56 C8 38 28 36 28 24 C28 14 16 14 16 22 C16 27 22 28 23 24"/>
-      <path d="M40 24 C40 6 60 4 60 -8"/>
-      <path d="M40 88 C40 70 60 68 60 56 C60 46 48 46 48 54 C48 59 54 60 55 56"/>
-    </g>
-    <g fill="#e0ad5f" fill-opacity=".13"><circle cx="44" cy="40" r="2.6"/><circle cx="49" cy="38" r="2.6"/><circle cx="47" cy="43" r="2.6"/></g>
-  </pattern>
 </svg>
 
 <!-- GERBANG PEMBUKA: gebyok layar penuh. Tampil di alamat #/ (pembuka); setelah kunci diputar → #/beranda.
@@ -45,7 +36,6 @@
      Hiasan = FOTO UKIRAN ASLI dari lapangan (23 Nov 2026), diwarnai emas-cokelat (gerbang/*.webp). -->
 <section id="gerbang" aria-label="Pembuka JEPARA Woodtech">
   <div class="g-ambang">
-    <svg class="g-pola" aria-hidden="true"><rect width="100%" height="100%" fill="url(#g-pola-sulur)"/></svg>
     <span class="g-lencana"><img src="logo-snt.png" alt="Logo SNT" width="38" height="30">SNT 14 JEPARA</span>
     <div class="g-cap">
       <h1 class="g-judul"><span class="g-j1" id="g-j1">JEPARA</span><span class="g-j2" id="g-j2">Woodtech</span></h1>
@@ -73,9 +63,6 @@
     <p class="g-kaki">Karya <b>Tim Siswa SNT 14 JEPARA</b><br>bersama para perajin ukir Desa Mulyoharjo</p>
   </div>
 </section>
-
-<!-- Latar pola sulur untuk seluruh aplikasi (sama dengan gerbang) -->
-<svg class="latar-pola" aria-hidden="true"><rect width="100%" height="100%" fill="url(#g-pola-sulur)"/></svg>
 
 <header id="kepala">
   <button type="button" class="ikon" id="tombol-kembali" aria-label="Kembali" hidden><svg><use href="#i-kembali"/></svg></button>
