@@ -363,6 +363,21 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 .g-daun.kiri .g-gagang { right: 18px; }
 .g-daun.kanan .g-gagang { left: 18px; }
 
+/* ---- panel bawah gaya Gen Z: ukiran asli + duotone cerah + stiker (kolaborasi budaya & anak muda) ---- */
+.g-genz { position: absolute; inset: 0; background-position: center; background-size: cover; }
+.g-genz.g1 { background-image: url("gerbang/genz-1.webp"); }
+.g-genz.g2 { background-image: url("gerbang/genz-2.webp"); }
+.g-genz.g3 { background-image: url("gerbang/genz-3.webp"); }
+.g-genz.g4 { background-image: url("gerbang/genz-4.webp"); }
+.g-stiker { position: absolute; left: 10px; bottom: 12px; max-width: calc(100% - 20px);
+  font: 800 clamp(11px, 1.6vw, 14px)/1.15 var(--huruf); letter-spacing: .01em; color: #111;
+  background: #fffdf5; border: 2px solid #111; border-radius: 9px; padding: 5px 10px 6px;
+  box-shadow: 3px 3px 0 #111; }
+.g-stiker.miring-kiri { transform: rotate(-4deg); }
+.g-stiker.miring-kanan { transform: rotate(3deg); left: auto; right: 10px; }
+.g-genz.g2 .g-stiker { background: #d9ff4f; }
+.g-genz.g3 .g-stiker { background: #ffd1f0; }
+
 /* ---- kunci + plat kunci di sambungan pintu ---- */
 .g-kunci-wadah { position: absolute; z-index: 2; left: 50%; top: 65.5%; transform: translate(calc(-100% + 36px), -50%);
   transform-origin: calc(100% - 36px) 50%; display: flex; align-items: center; transition: opacity .3s; }
