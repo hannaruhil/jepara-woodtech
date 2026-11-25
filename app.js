@@ -21,6 +21,19 @@ const TIM = 'Tim Siswa SNT 14 JEPARA'; // nama tim yang tampil di web
 const DAERAH = 'JEPARA'; // dipakai di sapaan beranda
 const LOKASI = 'Desa Mulyoharjo, JEPARA'; // tempat wawancara perajin
 const KEGIATAN = 'penelitian ISPO 2026 (bidang Komputer)';
+/* Hiasan gerbang & galeri "Jejak motif di batu" = foto ukiran BATU yang dipotret tim.
+   LOKASI_BATU: isi nama tempat pemotretan kalau sudah pasti (kosong = tidak ditampilkan).
+   Nama di GALERI_BATU = sebutan sementara dari tim, BUKAN nama motif dari perajin. */
+const TANGGAL_FOTO_BATU = '23 November 2026';
+const LOKASI_BATU = '';
+const GALERI_BATU = [
+    ['batu-medalion-jalinan', 'Medalion jalinan', true],
+    ['batu-panel-paviliun', 'Panel paviliun', false],
+    ['batu-medalion-sulur', 'Medalion sulur', true],
+    ['batu-panel-bunga-renda', 'Panel bunga renda', false],
+    ['batu-medalion-bunga', 'Medalion bunga', true],
+    ['batu-panel-bunga-matahari', 'Panel bunga matahari', false],
+];
 /* ------------------------------------------------------------------ pengaturan teknis */
 const ALAMAT_DATA = 'data/motif.json';
 const LEMARI_DATA = 'woodtech-data'; // nama simpanan foto & data di HP (sama dengan sw.ts)
@@ -240,7 +253,7 @@ function layarBeranda() {
     };
     const meta = (e) => [e.kode, ...(e.teknik || []).slice(0, 1), ...(e.kayu || []).slice(0, 1)].map(hurufBesarAwal).join(' · ');
     isi.innerHTML = `
-    <section class="sambut">
+    <section class="sambut berhias">
       <h1>Kenali motif ukir <span>${aman(DAERAH)}</span> langsung dari perajinnya</h1>
       <p>Foto, makna, dan cerita setiap motif dari bengkel di ${aman(LOKASI)}.</p>
       <a class="cari-pintas" href="#/motif" id="cari-pintas">${ikon('cari')}Cari motif, kayu, atau teknik…</a>
@@ -274,6 +287,18 @@ function layarBeranda() {
       </nav>
     </section>
 
+    <section>
+      <h2 class="judul-bagian">Jejak motif di batu</h2>
+      <p class="pengantar-bagian">Ukiran batu yang dipotret tim. Kami sedang bertanya kepada perajin:
+         apakah motif seperti ini juga hidup di ukiran kayu ${aman(DAERAH)}?</p>
+      <div class="geser-batu">${GALERI_BATU.map(([berkas, nama, bundar], n) => `
+        <button type="button" class="kartu kartu-batu${bundar ? ' bundar' : ''}" data-n="${n}">
+          <span class="foto"><img src="gerbang/${berkas}.webp" alt="" loading="lazy" decoding="async"></span>
+          <b>${nama}</b><small>Ukiran batu</small>
+        </button>`).join('')}</div>
+      <p class="catatan-kecil">Nama di atas adalah sebutan sementara dari tim. <a href="#/karya">Cerita selengkapnya ›</a></p>
+    </section>
+
     ${terbaru.length ? `
     <section>
       <h2 class="judul-bagian">Koleksi terbaru <a href="#/motif">Lihat semua ›</a></h2>
@@ -294,6 +319,11 @@ function layarBeranda() {
     </footer>`;
     // Ketuk kotak cari di beranda → buka Perpustakaan dengan kotak cari siap diketik
     $mungkin('#cari-pintas')?.addEventListener('click', () => { fokusCari = true; });
+    // Ketuk foto ukiran batu → perbesar
+    semua('.kartu-batu', isi).forEach(b => b.addEventListener('click', () => {
+        const [berkas, nama] = GALERI_BATU[Number(b.dataset.n)];
+        bukaPenampil(`gerbang/${berkas}.webp`, `${nama} — ukiran batu, difoto tim ${TANGGAL_FOTO_BATU}`);
+    }));
 }
 /* ------------------------------------------------------------------ MODUL A: PERPUSTAKAAN */
 function layarPerpustakaan() {
@@ -565,6 +595,14 @@ function layarKarya() {
       <h2>Kualitas data</h2>
       <p>Setiap entri diperiksa dengan <b>10 bidang wajib</b> (nama, ciri, teknik, kayu, makna, perajin, foto,
          izin, dan lainnya). Motif baru diterbitkan setelah lengkap dan izinnya jelas.</p>
+
+      <h2>Hiasan gerbang: jejak motif di batu</h2>
+      <p>Pintu gerbang aplikasi ini dihias dengan foto ukiran batu yang dipotret tim pada ${TANGGAL_FOTO_BATU}${LOKASI_BATU ? ` di ${aman(LOKASI_BATU)}` : ''}. Medalion jalinan, sulur, bunga, dan paviliun di foto itu
+         adalah bentuk-bentuk yang juga kami cari di ukiran kayu.</p>
+      <p>Pertanyaan yang sedang kami bawa ke bengkel perajin: <b>apakah motif ini juga dipakai pada ukiran kayu,
+         dan apa namanya?</b> Jawaban perajin akan kami tulis di sini. Sampai saat itu, nama di galeri hanyalah
+         sebutan sementara dari tim.</p>
+      <p><a class="tombol" href="#/beranda">Lihat galeri ukiran batu</a></p>
 
       <h2>Tim</h2>
       <p>${TIM}. Bagian dari ${KEGIATAN}, bersama para perajin ${LOKASI}.

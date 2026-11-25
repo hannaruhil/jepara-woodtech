@@ -13,12 +13,14 @@
    Data & foto TIDAK perlu naik versi — cukup jalankan build.py / terbitkan.py. */
 // Di dalam service worker, "self" adalah penjaga itu sendiri (bukan jendela halaman).
 const sw = self;
-const VERSI = 'woodtech-v1.18';
+const VERSI = 'woodtech-v1.19';
 const LEMARI_DATA = 'woodtech-data'; // data + foto (tidak dihapus saat versi naik)
 const BERKAS = ['./', './index.html', './app.js', './gaya.css', './manifest.webmanifest',
     './ikon-192.png', './ikon-512.png', './logo-snt.png',
     './gerbang/medalion-jalinan.webp', './gerbang/medalion-bunga.webp', './gerbang/medalion-sulur.webp',
-    './gerbang/ukir-bunga-renda.webp', './gerbang/ukir-paviliun.webp', './gerbang/ukir-bunga-matahari.webp', './gerbang/ukir-sulur.webp', './huruf/plus-jakarta-sans.woff2'];
+    './gerbang/ukir-bunga-renda.webp', './gerbang/ukir-paviliun.webp', './gerbang/ukir-bunga-matahari.webp', './gerbang/ukir-sulur.webp',
+    './gerbang/batu-medalion-jalinan.webp', './gerbang/batu-medalion-bunga.webp', './gerbang/batu-medalion-sulur.webp',
+    './gerbang/batu-panel-bunga-renda.webp', './gerbang/batu-panel-paviliun.webp', './gerbang/batu-panel-bunga-matahari.webp', './huruf/plus-jakarta-sans.woff2'];
 const BATAS_TUNGGU_MS = 4000;
 sw.addEventListener('install', ev => {
     ev.waitUntil((async () => {
