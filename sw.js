@@ -13,7 +13,7 @@
    Data & foto TIDAK perlu naik versi — cukup jalankan build.py / terbitkan.py. */
 // Di dalam service worker, "self" adalah penjaga itu sendiri (bukan jendela halaman).
 const sw = self;
-const VERSI = 'woodtech-v1.13';
+const VERSI = 'woodtech-v1.14';
 const LEMARI_DATA = 'woodtech-data'; // data + foto (tidak dihapus saat versi naik)
 const BERKAS = ['./', './index.html', './app.js', './gaya.css', './manifest.webmanifest',
     './ikon-192.png', './ikon-512.png', './logo-snt.png',
@@ -21,7 +21,8 @@ const BERKAS = ['./', './index.html', './app.js', './gaya.css', './manifest.webm
 const BATAS_TUNGGU_MS = 4000;
 sw.addEventListener('install', ev => {
     ev.waitUntil((async () => {
-        await (await caches.open(VERSI)).addAll(BERKAS);
+        // cache: 'reload' → ambil langsung dari internet, supaya HTML, CSS, dan JS selalu satu versi
+        await (await caches.open(VERSI)).addAll(BERKAS.map(u => new Request(u, { cache: 'reload' })));
         // Coba simpan data sejak awal (kalau gagal tidak apa-apa; app.ts akan mencoba lagi)
         try {
             const res = await fetch('data/motif.json', { cache: 'no-cache' });
@@ -87,7 +88,7 @@ async function fotoSimpananDulu(req) {
 async function aplikasiSimpananDulu(req, ev) {
     const lemari = await caches.open(VERSI);
     const simpanan = await lemari.match(req, { ignoreSearch: true });
-    const dariInternet = fetch(req).then(res => {
+    const dariInternet = fetch(req, { cache: 'no-cache' }).then(res => {
         if (res.ok)
             void lemari.put(req, res.clone());
         return res;

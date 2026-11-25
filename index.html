@@ -14,7 +14,7 @@
 <link rel="icon" href="ikon-192.png">
 <link rel="apple-touch-icon" href="ikon-192.png">
 <link rel="preload" href="huruf/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="gaya.css">
+<link rel="stylesheet" href="gaya.css?v=fbd9dad4">
 </head>
 <body>
 
@@ -31,38 +31,42 @@
   <symbol id="i-pintu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 21V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v15M2 21h20M12 4v17"/><path d="M9.5 12.5v1M14.5 12.5v1"/></g></symbol>
 </svg>
 
-<!-- GERBANG PEMBUKA: gebyok layar penuh. Tampil di alamat #/ (pembuka); setelah kunci diputar → #/beranda.
+<!-- GERBANG PEMBUKA: pintu gebyok PENUH SATU LAYAR (papan nama di atas, kunci di sambungan). Tampil di alamat #/ (pembuka); setelah kunci diputar → #/beranda.
      Tombol kembali HP / ikon pintu di kepala aplikasi membawa kembali ke sini (diatur app.ts).
      Hiasan = FOTO UKIRAN ASLI dari lapangan (23 Nov 2026), diwarnai emas-cokelat (gerbang/*.webp). -->
 <section id="gerbang" aria-label="Pembuka JEPARA Woodtech">
-  <div class="g-ambang">
-    <span class="g-lencana"><img src="logo-snt.png" alt="Logo SNT" width="38" height="30">SNT 14 JEPARA</span>
-    <div class="g-cap">
-      <h1 class="g-judul"><span class="g-j1" id="g-j1">JEPARA</span><span class="g-j2" id="g-j2">Woodtech</span></h1>
-      <p class="g-sub">Ensiklopedia Motif Ukir</p>
-    </div>
-  </div>
   <div class="g-tengah">
-  <div class="g-pintu" id="g-pintu">
-    <div class="g-cahaya" aria-hidden="true"></div>
-    <div class="g-daun kiri" aria-hidden="true">
-      <div class="g-panel atas"><span class="g-medalion"></span></div>
-      <span class="g-gagang"></span>
-      <div class="g-panel bawah"><span class="g-bunga"></span></div>
+    <div class="g-pintu" id="g-pintu">
+      <div class="g-cahaya" aria-hidden="true"></div>
+      <div class="g-daun kiri" aria-hidden="true">
+        <div class="g-panel atas"><span class="g-medalion"></span></div>
+        <div class="g-panel atas luar"><span class="g-medalion-kecil"></span></div>
+        <span class="g-gagang"></span>
+        <div class="g-panel bawah"><span class="g-bunga"></span></div>
+        <div class="g-panel bawah luar"><span class="g-bunga-luar"></span></div>
+      </div>
+      <div class="g-daun kanan" aria-hidden="true">
+        <div class="g-panel atas"><span class="g-medalion"></span></div>
+        <div class="g-panel atas luar"><span class="g-medalion-kecil"></span></div>
+        <span class="g-gagang"></span>
+        <div class="g-panel bawah"><span class="g-bunga"></span></div>
+        <div class="g-panel bawah luar"><span class="g-bunga-luar"></span></div>
+      </div>
+      <div class="g-kunci-wadah">
+        <button type="button" class="g-tombol" id="g-buka">
+          <span class="g-kunci-kepala" aria-hidden="true"></span><span class="g-kunci-batang">Buka Gerbang</span><span class="g-kunci-gigi" aria-hidden="true"></span>
+        </button>
+        <span class="g-plat" aria-hidden="true"></span>
+      </div>
     </div>
-    <div class="g-daun kanan" aria-hidden="true">
-      <div class="g-panel atas"><span class="g-medalion"></span></div>
-      <span class="g-gagang"></span>
-      <div class="g-panel bawah"><span class="g-bunga"></span></div>
-    </div>
-    <div class="g-kunci-wadah">
-      <button type="button" class="g-tombol" id="g-buka">
-        <span class="g-kunci-kepala" aria-hidden="true"></span><span class="g-kunci-batang">Buka Gerbang</span><span class="g-kunci-gigi" aria-hidden="true"></span>
-      </button>
-      <span class="g-plat" aria-hidden="true"></span>
+    <div class="g-papan">
+      <div class="g-cap">
+        <h1 class="g-judul"><span class="g-j1" id="g-j1">JEPARA</span><span class="g-j2" id="g-j2">Woodtech</span></h1>
+        <p class="g-sub">Ensiklopedia Motif Ukir</p>
+      </div>
     </div>
   </div>
-  </div>
+  <span class="g-lencana"><img src="logo-snt.png" alt="Logo SNT" width="38" height="30">SNT 14 JEPARA</span>
   <p class="g-kaki">Karya <b>Tim Siswa SNT 14 JEPARA</b> bersama para perajin ukir Desa Mulyoharjo</p>
 </section>
 
@@ -86,6 +90,6 @@
 </div>
 
 <noscript><p class="kotak-info">Aplikasi ini butuh JavaScript. Aktifkan JavaScript di browser.</p></noscript>
-<script src="app.js"></script>
+<script src="app.js?v=1aed9eb4"></script>
 </body>
 </html>
