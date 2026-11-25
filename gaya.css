@@ -281,58 +281,105 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 .sprite { position: absolute; }
 .jarak-atas { margin-top: 16px; }
 
-/* ---------- GERBANG PEMBUKA (pintu gebyok, 24 Nov 2026) ----------
-   Layar penuh di atas aplikasi. Dunia kayu gelap: sengaja beda dari isi aplikasi.
+/* ---------- GERBANG PEMBUKA: gebyok LAYAR PENUH (25 Nov 2026, versi 2) ----------
+   Atas  : ambang (balok atas) berisi lencana sekolah + judul.
+   Bawah : dua daun pintu kayu memenuhi layar. Panel atas = medalion jalinan (foto asli) yang
+           UTUH di tengah dan terbelah saat pintu dibuka; panel bawah = ukiran bunga (foto asli)
+           yang menyambung di kedua daun. Di tengah: plat kunci (medalion bunga) + kunci kuningan.
    Semua kelas berawalan g- supaya tidak bentrok dengan gaya lain. */
 #gerbang {
   --g-malam: #24170f; --g-emas: #e0ad5f; --g-krem: #fbf3e6; --g-jati: #e2873f;
-  position: fixed; inset: 0; z-index: 100; background: var(--g-malam); color: var(--g-krem);
-  display: flex; flex-direction: column; align-items: center; justify-content: safe center; overflow-y: auto;
-  gap: clamp(14px, 3vh, 26px); text-align: center; isolation: isolate;
-  padding: max(64px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  transition: opacity .6s ease .9s, visibility 0s linear 1.5s;
+  --g-d: min(34vh, 80vw);                     /* garis tengah medalion */
+  position: fixed; inset: 0; z-index: 100; background: #120b06; color: var(--g-krem);
+  display: grid; grid-template-rows: auto 1fr; overflow: hidden; isolation: isolate;
+  transition: opacity .5s ease 1.1s, visibility 0s linear 1.6s;
 }
-#gerbang .g-pola { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; flex: none; }
-#gerbang .g-sorot { position: absolute; inset: 0; z-index: -1;
-  background: radial-gradient(ellipse 55% 50% at 50% 52%, rgba(226,135,63,.28), transparent 70%),
-              radial-gradient(ellipse at center, transparent 40%, rgba(10,6,3,.75)); }
-.g-lencana { position: absolute; top: max(14px, env(safe-area-inset-top)); left: max(16px, env(safe-area-inset-left));
-  display: flex; align-items: center; gap: 10px; background: var(--g-krem); color: #3a2416; font-weight: 800; font-size: 16px;
-  padding: 8px 20px 8px 12px; border-radius: 99px; box-shadow: 0 4px 0 #b98b55, 0 8px 18px rgba(0,0,0,.3); }
-.g-lencana img { height: 33px; width: auto; display: block; }
 
-.g-cap { display: inline-flex; flex-direction: column; align-items: stretch; gap: 10px; }
+/* ---- ambang atas ---- */
+.g-ambang { position: relative; z-index: 3; text-align: center; overflow: hidden;
+  padding: max(64px, calc(env(safe-area-inset-top) + 56px)) 16px 16px;
+  background: linear-gradient(#2a190e, #3a2516); border-bottom: 3px solid var(--g-emas);
+  box-shadow: 0 5px 0 #24150b, 0 10px 24px rgba(0,0,0,.55);
+  transition: transform .9s cubic-bezier(.6,.05,.25,1) .1s, opacity .6s ease .1s; }
+.g-ambang .g-pola { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.g-lencana { position: absolute; top: max(12px, env(safe-area-inset-top)); left: max(14px, env(safe-area-inset-left));
+  display: flex; align-items: center; gap: 9px; background: var(--g-krem); color: #3a2416; font-weight: 800; font-size: 15px;
+  padding: 7px 18px 7px 11px; border-radius: 99px; box-shadow: 0 4px 0 #b98b55, 0 8px 18px rgba(0,0,0,.3); }
+.g-lencana img { height: 30px; width: auto; display: block; }
+.g-cap { display: inline-flex; flex-direction: column; align-items: stretch; gap: 8px; }
 .g-judul { margin: 0; display: flex; flex-direction: column; align-items: center; font-weight: 800; line-height: .92;
   text-shadow: 0 3px 0 #5a3218, 0 10px 22px rgba(0,0,0,.45); }
-.g-j1 { color: var(--g-krem); letter-spacing: .01em; font-size: clamp(44px, 9vw, 78px); }
-.g-j2 { color: var(--g-emas); letter-spacing: -.02em; font-size: clamp(40px, 8vw, 70px); }
+.g-j1 { color: var(--g-krem); letter-spacing: .01em; font-size: clamp(38px, 7.5vw, 64px); }
+.g-j2 { color: var(--g-emas); letter-spacing: -.02em; font-size: clamp(34px, 6.6vw, 56px); }
 .g-sub { margin: 0; display: flex; align-items: center; gap: 10px; color: var(--g-emas); font-weight: 700;
-  font-size: clamp(11px, 1.7vw, 13.5px); letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
+  font-size: clamp(10.5px, 1.6vw, 13px); letter-spacing: .22em; text-transform: uppercase; white-space: nowrap; }
 .g-sub::before, .g-sub::after { content: ""; flex: 1; height: 2px; border-radius: 2px; background: currentColor; opacity: .55; }
 
-.g-pintu { position: relative; flex: none; width: min(300px, 72vw); aspect-ratio: 300 / 330; perspective: 900px; cursor: pointer; }
-.g-pintu .g-kusen { position: absolute; inset: 0; width: 100%; height: 100%; }
-.g-cahaya { position: absolute; left: 13%; right: 13%; top: 22%; bottom: 3%; border-radius: 4px;
-  background: radial-gradient(ellipse at 50% 60%, #fff6dc, #f3b766 45%, #c06a27); opacity: 0; transition: opacity .5s ease .25s; }
-.g-daun { position: absolute; top: 22%; bottom: 3%; width: 37%; transition: transform 1.1s cubic-bezier(.6,.05,.25,1); }
-.g-daun svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 2px 3px rgba(0,0,0,.35)); }
-.g-daun.kiri { left: 13%; transform-origin: left center; }
-.g-daun.kanan { right: 13%; transform-origin: right center; }
-.g-daun.kanan svg { transform: scaleX(-1); }
-.g-bayang { flex: none; width: min(320px, 76vw); height: 18px; margin-top: -18px; border-radius: 50%; background: rgba(0,0,0,.45); filter: blur(6px); }
+/* ---- dua daun pintu ---- */
+.g-pintu { position: relative; perspective: 1500px; cursor: pointer; }
+.g-cahaya { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease .3s;
+  background: radial-gradient(ellipse 60% 55% at 50% 45%, #fff3d4, #f0b464 40%, #6b3a17 85%); }
+.g-daun { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 11px),
+    linear-gradient(90deg, #5b3920, #74492a 55%, #5b3920);
+  transition: transform 1.2s cubic-bezier(.6,.05,.25,1); }
+.g-daun.kiri { left: 0; transform-origin: left center; box-shadow: inset -2px 0 0 #1e1008, inset 0 0 40px rgba(0,0,0,.35); }
+.g-daun.kanan { right: 0; transform-origin: right center; box-shadow: inset 2px 0 0 #1e1008, inset 0 0 40px rgba(0,0,0,.35); }
+.g-daun::before { content: ""; position: absolute; inset: 8px; border: 1.5px solid rgba(224,173,95,.4); border-radius: 4px; pointer-events: none; }
+.g-daun.kiri::before { right: 6px; }
+.g-daun.kanan::before { left: 6px; }
+
+.g-panel { position: absolute; overflow: hidden; background: #3a2414; }
+.g-panel::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--g-emas), inset 0 10px 20px rgba(0,0,0,.55); }
+.g-panel.atas { top: 4%; bottom: 47%; }
+.g-panel.bawah { top: 72%; bottom: 5%; }
+.g-daun.kiri .g-panel { left: 22px; right: 10px; border-radius: 8px; }
+.g-daun.kanan .g-panel { right: 22px; left: 10px; border-radius: 8px; }
+
+/* medalion utuh di tengah: tiap daun memperlihatkan setengahnya */
+.g-medalion { position: absolute; top: 50%; width: var(--g-d); height: var(--g-d); margin-top: calc(var(--g-d) / -2);
+  border-radius: 50%; background: url("gerbang/medalion-jalinan.webp") center / cover;
+  box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 8px #3a2414, 0 0 0 9.5px rgba(224,173,95,.55), 0 10px 26px rgba(0,0,0,.6); }
+.g-daun.kiri .g-medalion { right: calc(var(--g-d) / -2 - 10px); }
+.g-daun.kanan .g-medalion { left: calc(var(--g-d) / -2 - 10px); }
+/* panel bunga menyambung di kedua daun */
+.g-bunga { position: absolute; top: 0; bottom: 0; width: calc(200% + 20px); background: url("gerbang/panel-bunga.webp") center / cover; }
+.g-daun.kiri .g-bunga { left: 0; }
+.g-daun.kanan .g-bunga { right: 0; }
+/* gagang pintu kuningan */
+.g-gagang { position: absolute; top: 60%; width: 14px; height: 54px; border-radius: 8px; background: linear-gradient(90deg, #c48838, #f8e0a8 50%, #c48838);
+  box-shadow: 0 3px 6px rgba(0,0,0,.5); }
+.g-daun.kiri .g-gagang { right: 18px; }
+.g-daun.kanan .g-gagang { left: 18px; }
+
+/* ---- kunci + plat kunci (medalion bunga) di tengah ---- */
+.g-kunci-wadah { position: absolute; z-index: 2; left: 50%; top: 59.5%; transform: translate(calc(-100% + 36px), -50%);
+  display: flex; align-items: center; transition: opacity .3s; }
+.g-plat { flex: none; position: relative; z-index: 1; width: 72px; height: 72px; margin-left: -22px; border-radius: 50%;
+  background: url("gerbang/medalion-bunga.webp") center / cover;
+  box-shadow: 0 0 0 3px var(--g-emas), 0 0 0 6px #3a2414, 0 6px 14px rgba(0,0,0,.55); pointer-events: none; }
+.g-plat::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 18px; margin: -9px 0 0 -5px;
+  border-radius: 5px 5px 2px 2px; background: #120b06; box-shadow: 0 0 0 2px var(--g-emas); }
+
+.g-kaki { position: absolute; z-index: 2; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  margin: 0; width: max-content; max-width: calc(100% - 32px); text-align: center; font-size: 12.5px; font-weight: 600; line-height: 1.55;
+  color: rgba(251,243,230,.85); background: rgba(18,11,6,.82); padding: 7px 16px; border-radius: 14px; border: 1px solid rgba(224,173,95,.35);
+  transition: opacity .3s; }
+.g-kaki b { color: var(--g-krem); }
 
 /* Tombol = KUNCI kuningan: kepala bulat berlubang + batang bertulisan + gigi kunci */
 .g-tombol { appearance: none; border: 0; background: none; padding: 0; cursor: pointer; color: #3b200e;
   --kuningan: linear-gradient(180deg, #f8e0a8 0%, #e7b866 45%, #c48838 100%);
   display: inline-flex; align-items: flex-start; height: 76px;
-  filter: drop-shadow(0 3px 0 #7a4a1e) drop-shadow(0 10px 14px rgba(0,0,0,.45));
+  filter: drop-shadow(0 3px 0 #7a4a1e) drop-shadow(0 10px 14px rgba(0,0,0,.55));
   transition: transform .15s; }
 .g-kunci-kepala { flex: none; width: 66px; height: 66px; border-radius: 50%; position: relative; z-index: 1;
   background:
-    radial-gradient(circle, var(--g-malam) 0 9px, #8a5a26 10px 11px, transparent 12px),
+    radial-gradient(circle, #24170f 0 9px, #8a5a26 10px 11px, transparent 12px),
     radial-gradient(circle, transparent 0 19px, rgba(91,52,22,.55) 20px 21.5px, transparent 22.5px),
     var(--kuningan); }
-/* hiasan kecil di kepala kunci: empat titik seperti ukiran */
 .g-kunci-kepala::before { content: ""; position: absolute; inset: 0; border-radius: 50%;
   background:
     radial-gradient(circle at 50% 13%, rgba(91,52,22,.6) 0 2.5px, transparent 3.5px),
@@ -346,29 +393,40 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 .g-tombol:hover { transform: translateX(4px); }
 .g-tombol:active { transform: translateX(8px) scale(.98); }
 .g-tombol:focus-visible { outline: 3px solid var(--g-krem); outline-offset: 6px; border-radius: 40px; }
-/* saat ditekan: kunci didorong masuk lalu diputar */
 @keyframes g-putar-kunci {
   0% { transform: none; }
-  45% { transform: translateX(18px); }
-  100% { transform: translateX(18px) rotateX(78deg); }
+  45% { transform: translateX(16px); }
+  100% { transform: translateX(16px) rotateX(78deg); }
 }
 #gerbang.putar .g-tombol { animation: g-putar-kunci .55s ease-in-out forwards; }
-.g-kaki { margin: 6px 0 0; font-size: 13px; font-weight: 600; line-height: 1.6; color: rgba(251,243,230,.7); letter-spacing: .02em; }
-.g-kaki b { color: var(--g-krem); }
 
-/* saat dibuka: daun pintu berayun, cahaya muncul, lalu gerbang memudar */
-#gerbang.buka .g-daun.kiri { transform: rotateY(-108deg); }
-#gerbang.buka .g-daun.kanan { transform: rotateY(108deg); }
+/* ---- saat dibuka: daun berayun, ambang naik, cahaya, lalu memudar ---- */
+#gerbang.buka .g-daun.kiri { transform: rotateY(-100deg); }
+#gerbang.buka .g-daun.kanan { transform: rotateY(100deg); }
 #gerbang.buka .g-cahaya { opacity: 1; }
-#gerbang.buka .g-pintu { transform: scale(1.5); transition: transform 1.2s cubic-bezier(.6,.05,.25,1) .35s; }
-#gerbang.buka .g-tombol, #gerbang.buka .g-cap, #gerbang.buka .g-kaki, #gerbang.buka .g-lencana, #gerbang.buka .g-bayang
-  { opacity: 0; transition: opacity .35s; }
+#gerbang.buka .g-ambang { transform: translateY(-105%); opacity: 0; }
+#gerbang.buka .g-kunci-wadah, #gerbang.buka .g-kaki { opacity: 0; }
 #gerbang.buka { opacity: 0; visibility: hidden; pointer-events: none; }
 
-@media (max-height: 700px) { .g-pintu { width: min(230px, 60vw); } }
-@media (max-height: 560px) { .g-pintu { width: min(180px, 50vw); } }
+@media (max-height: 640px) { #gerbang { --g-d: min(30vh, 70vw); } .g-ambang { padding-top: 56px; } }
 @media (prefers-reduced-motion: reduce) {
-  .g-daun, .g-pintu, #gerbang.buka .g-pintu { transition: none !important; }
+  .g-daun, .g-ambang { transition: none !important; }
   #gerbang.putar .g-tombol { animation: none; }
   #gerbang { transition: opacity .3s, visibility 0s linear .3s !important; }
+}
+
+/* tombol kecil "kembali ke gerbang" di kepala aplikasi */
+.ikon-gerbang { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; color: var(--krem); }
+.ikon-gerbang svg { width: 22px; height: 22px; }
+
+/* Layar lebar (laptop): gebyok berdiri di tengah dinding berpola, tidak melebar penuh */
+#gerbang .g-pintu { width: min(100%, 760px); justify-self: center; }
+@media (min-width: 761px) {
+  #gerbang { background: #1a100a; }
+  #gerbang .g-pintu { box-shadow: 0 0 0 14px #3a2516, 0 0 0 16px rgba(224,173,95,.5), 0 20px 60px rgba(0,0,0,.7); margin-top: 16px; }
+}
+/* HP sempit: kunci diperkecil supaya tidak terpotong di tepi layar */
+@media (max-width: 520px) {
+  .g-kunci-wadah { transform: translate(calc(-100% + 36px), -50%) scale(.86); transform-origin: calc(100% - 36px) 50%; }
+  .g-kunci-batang { padding: 0 10px 0 18px; letter-spacing: .1em; font-size: 12.5px; }
 }

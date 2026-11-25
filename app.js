@@ -183,7 +183,7 @@ function tampilkan() {
     if (isi.dataset.layar === 'perpustakaan')
         gulirPerpustakaan = window.scrollY;
     let judulKecil = '';
-    if (!layar)
+    if (!layar || layar === 'beranda')
         layarBeranda();
     else if (layar === 'motif' && kode)
         judulKecil = layarDetail(decodeURIComponent(kode));
@@ -202,11 +202,15 @@ function tampilkan() {
         judulKecil = 'Di Balik Layar';
     }
     else {
-        location.replace('#/');
+        location.replace('#/beranda');
         return;
     }
     $('#judul-layar').textContent = judulKecil;
-    $('#tombol-kembali').hidden = !layar;
+    $('#tombol-kembali').hidden = !layar || layar === 'beranda';
+    if (!layar)
+        tampilkanGerbang();
+    else
+        sembunyikanGerbang(); // #/ = gerbang pembuka
     document.title = (judulKecil ? judulKecil + ' · ' : '') + 'JEPARA WOODTECH';
     // Kembali ke Perpustakaan → posisi gulir dikembalikan; layar lain mulai dari atas
     const keGulir = isi.dataset.layar === 'perpustakaan' ? gulirPerpustakaan : 0;
@@ -217,7 +221,7 @@ function kembali() {
     if (sudahPindahLayar)
         history.back();
     else
-        location.replace(layar === 'motif' && kode ? '#/motif' : '#/');
+        location.replace(layar === 'motif' && kode ? '#/motif' : '#/beranda');
 }
 /* ------------------------------------------------------------------ BERANDA */
 function layarBeranda() {
@@ -672,14 +676,17 @@ $('#tombol-kembali').addEventListener('click', kembali);
 addEventListener('scroll', () => $('#kepala').classList.toggle('bergaris', window.scrollY > 4), { passive: true });
 addEventListener('hashchange', () => { sudahPindahLayar = true; tampilkan(); });
 /* ------------------------------------------------------------------ GERBANG PEMBUKA
-   Pintu gebyok di index.html (#gerbang). Tampil setiap kali aplikasi dibuka dari beranda.
-   Kalau yang dibuka tautan langsung (mis. #/motif/M01 dari teman), gerbang dilewati. */
+   Gebyok layar penuh di index.html (#gerbang). Alamat #/ (atau tanpa alamat) = gerbang;
+   setelah kunci diputar dan pintu terbuka → #/beranda. Tombol kembali di HP atau ikon pintu
+   di kepala aplikasi membawa kembali ke gerbang. Tautan langsung (mis. #/motif/M01) melewati gerbang. */
 const PUTAR_KUNCI_MS = 550; // lama animasi kunci diputar (gaya.css: g-putar-kunci)
 const LAMA_BUKA_MS = 1600; // lama pintu terbuka + memudar (gaya.css)
+const gerbang = $('#gerbang');
+let sedangMembuka = false;
 /** Samakan lebar tulisan "JEPARA" dengan "Woodtech" supaya judul seimbang. */
 function samakanLebarJudul() {
     const j1 = $mungkin('#g-j1'), j2 = $mungkin('#g-j2');
-    if (!j1 || !j2)
+    if (!j1 || !j2 || gerbang.hidden)
         return;
     j1.style.fontSize = '';
     const ukuran = parseFloat(getComputedStyle(j1).fontSize);
@@ -687,44 +694,45 @@ function samakanLebarJudul() {
     if (w1 && w2)
         j1.style.fontSize = `${ukuran * w2 / w1}px`;
 }
-function siapkanGerbang() {
-    const gerbang = $mungkin('#gerbang');
-    if (!gerbang)
-        return;
-    const kepala = $('#kepala');
-    const tutup = () => {
-        gerbang.remove();
-        kepala.inert = false;
-        isi.inert = false;
-        document.body.classList.remove('terkunci');
-        removeEventListener('resize', samakanLebarJudul);
-    };
-    if (bagianAlamat().length) {
-        tutup();
-        return;
-    } // tautan langsung → tanpa gerbang
-    kepala.inert = true; // selama gerbang tampil, isi di belakangnya tidak bisa disentuh/difokus
+function tampilkanGerbang() {
+    sedangMembuka = false;
+    gerbang.classList.remove('buka', 'putar');
+    gerbang.hidden = false;
+    $('#kepala').inert = true; // selama gerbang tampil, isi di belakangnya tidak bisa disentuh/difokus
     isi.inert = true;
     document.body.classList.add('terkunci');
     samakanLebarJudul();
-    void document.fonts?.ready.then(samakanLebarJudul);
-    addEventListener('resize', samakanLebarJudul);
-    let sudahDibuka = false;
-    const buka = () => {
-        if (sudahDibuka)
-            return;
-        sudahDibuka = true;
-        const pelan = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const jedaKunci = pelan ? 0 : PUTAR_KUNCI_MS;
-        gerbang.classList.add('putar'); // 1) kunci diputar
-        setTimeout(() => gerbang.classList.add('buka'), jedaKunci); // 2) pintu terbuka
-        setTimeout(() => { tutup(); isi.focus({ preventScroll: true }); }, // 3) masuk beranda
-        jedaKunci + (pelan ? 350 : LAMA_BUKA_MS));
-    };
-    $('#g-buka').addEventListener('click', buka);
-    $('#g-pintu').addEventListener('click', buka);
 }
-siapkanGerbang();
+function sembunyikanGerbang() {
+    gerbang.hidden = true;
+    gerbang.classList.remove('buka', 'putar');
+    $('#kepala').inert = false;
+    isi.inert = false;
+    document.body.classList.remove('terkunci');
+}
+function bukaGerbang() {
+    if (sedangMembuka)
+        return;
+    sedangMembuka = true;
+    const pelan = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const jedaKunci = pelan ? 0 : PUTAR_KUNCI_MS;
+    gerbang.classList.add('putar'); // 1) kunci diputar
+    setTimeout(() => gerbang.classList.add('buka'), jedaKunci); // 2) pintu terbuka
+    setTimeout(() => {
+        history.pushState(null, '', '#/beranda'); // pushState: tombol kembali HP → gerbang lagi
+        sembunyikanGerbang();
+        $('#tombol-kembali').hidden = true;
+        isi.focus({ preventScroll: true });
+    }, jedaKunci + (pelan ? 350 : LAMA_BUKA_MS));
+}
+$('#g-buka').addEventListener('click', bukaGerbang);
+$('#g-pintu').addEventListener('click', bukaGerbang);
+addEventListener('resize', samakanLebarJudul);
+void document.fonts?.ready.then(samakanLebarJudul);
+if (bagianAlamat().length)
+    sembunyikanGerbang();
+else
+    tampilkanGerbang();
 async function mulai() {
     if (statusOffline.didukung) {
         try {
