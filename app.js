@@ -670,6 +670,14 @@ async function simpanSemuaFotoSekali() {
     statusOffline.siap = statusOffline.tersimpan === statusOffline.total && !!navigator.serviceWorker.controller;
     perbaruiLencanaOffline();
 }
+let permintaanPasang = null;
+const sudahTerpasang = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+addEventListener('beforeinstallprompt', ev => {
+    ev.preventDefault(); // simpan dulu; dimunculkan saat tombol diketuk
+    permintaanPasang = ev;
+    perbaruiLencanaOffline();
+});
+addEventListener('appinstalled', () => { permintaanPasang = null; perbaruiLencanaOffline(); });
 function perbaruiLencanaOffline() {
     const l = $('#lencana-offline');
     const s = statusOffline;
@@ -685,10 +693,15 @@ function perbaruiLencanaOffline() {
         keadaan = 'luring';
         teks = 'Sedang tanpa internet — memakai simpanan di HP.';
     }
+    else if (!sudahTerpasang()) {
+        label = ['📲', 'Pasang', 'Pasang di HP'];
+        keadaan = 'pasang';
+        teks = s.siap ? `Semua ${s.total} foto sudah tersimpan di HP ini.` : `Menyimpan foto untuk offline: ${s.tersimpan}/${s.total}.`;
+    }
     else if (s.siap) {
-        label = ['✓', 'Offline', 'Siap offline'];
+        label = ['✓', 'Siap', 'Siap tanpa internet'];
         keadaan = 'siap';
-        teks = `Siap offline: ${s.total} foto tersimpan di HP.`;
+        teks = `Siap tanpa internet: ${s.total} foto tersimpan di HP.`;
     }
     else {
         label = ['…', `${s.tersimpan}/${s.total}`, `Menyimpan ${s.tersimpan}/${s.total}`];
@@ -706,11 +719,34 @@ function perbaruiLencanaOffline() {
     const info = $mungkin('#info-offline');
     if (info)
         info.textContent = teks;
+    const st = $mungkin('#pasang-status');
+    if (st)
+        isiStatusPasang(st);
 }
-$('#lencana-offline').addEventListener('click', () => {
-    if (location.hash !== '#/tentang')
-        location.hash = '#/tentang';
-});
+function isiStatusPasang(el) {
+    const s = statusOffline;
+    el.dataset.siap = String(s.siap);
+    el.textContent = !s.didukung ? 'Browser ini tidak bisa menyimpan aplikasi untuk offline. Coba pakai Chrome.'
+        : s.siap ? `✓ Semua ${s.total} foto sudah tersimpan di HP ini. Web bisa dibuka tanpa internet.`
+            : `Sedang menyimpan foto: ${s.tersimpan} dari ${s.total}. Biarkan internet menyala sampai selesai.`;
+}
+async function ketukPasang() {
+    if (permintaanPasang && !sudahTerpasang()) { // HP mendukung → jendela "Instal aplikasi" langsung
+        const p = permintaanPasang;
+        permintaanPasang = null;
+        await p.prompt();
+        await p.userChoice.catch(() => null);
+        perbaruiLencanaOffline();
+        return;
+    }
+    const d = $('#panduan-pasang'); // selain itu → panduan langkah demi langkah
+    isiStatusPasang($('#pasang-status'));
+    $('#pasang-judul').textContent = sudahTerpasang() ? 'JEPARA Woodtech sudah terpasang' : 'Pasang JEPARA Woodtech di HP';
+    $('#pasang-langkah').hidden = sudahTerpasang();
+    d.showModal();
+}
+$('#lencana-offline').addEventListener('click', () => void ketukPasang());
+$('#pasang-tutup').addEventListener('click', () => $('#panduan-pasang').close());
 addEventListener('online', () => { perbaruiLencanaOffline(); if (dataSiap)
     void simpanSemuaFoto(); });
 addEventListener('offline', perbaruiLencanaOffline);
