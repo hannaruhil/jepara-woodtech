@@ -360,20 +360,12 @@ button.tautan { border: 0; background: none; padding: 0; color: var(--emas); fon
 .g-daun.kanan .g-gagang { left: 18px; }
 
 /* ---- panel bawah: 4 foto ukiran asli BERBEDA dengan WARNA ASLI (bunga renda, paviliun, bunga matahari, sulur)
-        + stiker gaya anak muda (kolaborasi budaya & generasi muda). Jangan diberi warna/filter. ---- */
+        tanpa tulisan di atasnya. Jangan diberi warna/filter. ---- */
 .g-genz { position: absolute; inset: 0; background-position: center; background-size: cover; }
 .g-genz.g1 { background-image: url("gerbang/ukir-bunga-renda.webp?v=15349711"); }
 .g-genz.g2 { background-image: url("gerbang/ukir-paviliun.webp?v=2c8dc936"); }
 .g-genz.g3 { background-image: url("gerbang/ukir-bunga-matahari.webp?v=a8c2ed5c"); }
 .g-genz.g4 { background-image: url("gerbang/ukir-sulur.webp?v=94317a0b"); }
-.g-stiker { position: absolute; left: 10px; bottom: 12px; max-width: calc(100% - 20px);
-  font: 800 clamp(11px, 1.6vw, 14px)/1.15 var(--huruf); letter-spacing: .01em; color: #111;
-  background: #fffdf5; border: 2px solid #111; border-radius: 9px; padding: 5px 10px 6px;
-  box-shadow: 3px 3px 0 #111; }
-.g-stiker.miring-kiri { transform: rotate(-4deg); }
-.g-stiker.miring-kanan { transform: rotate(3deg); left: auto; right: 10px; }
-.g-genz.g2 .g-stiker { background: #d9ff4f; }
-.g-genz.g3 .g-stiker { background: #ffd1f0; }
 
 /* ---- kunci + plat kunci di sambungan pintu ---- */
 .g-kunci-wadah { position: absolute; z-index: 2; left: 50%; top: 65.5%; transform: translate(calc(-100% + 36px), -50%);
